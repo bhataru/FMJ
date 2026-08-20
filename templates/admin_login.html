@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Faizan Mir</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+        #login-container {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        #login-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex items-center justify-center relative overflow-x-hidden p-4">
+    
+    <!-- Three.js Background & Intro Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Login Container -->
+    <div id="login-container" class="w-full max-w-md p-6 sm:p-8 bg-slate-900/60 backdrop-blur-md border border-slate-800/80 rounded-xl shadow-2xl relative z-10 box-border">
+        <div class="text-center mb-6">
+            <span class="inline-block px-3 py-1 bg-sky-500/10 text-sky-400 border border-sky-500/20 text-xs font-semibold rounded-full mb-3">Secure Portal Access</span>
+            <h1 class="text-xl sm:text-2xl font-bold text-slate-100">Faizan Mir Portal</h1>
+        </div>
+        <form id="login-form" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-1">Username</label>
+                <input type="text" id="username" required class="w-full bg-slate-950/80 border border-slate-800 rounded-lg p-3 text-slate-100 focus:outline-none focus:border-sky-500 box-border">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-1">Password</label>
+                <div class="relative">
+                    <input type="password" id="password" required class="w-full bg-slate-950/80 border border-slate-800 rounded-lg p-3 pr-10 text-slate-100 focus:outline-none focus:border-sky-500 box-border">
+                    <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-200 focus:outline-none cursor-pointer">
+                        <!-- Eye Icon (Default Closed/Slash) -->
+                        <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <button type="submit" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold py-3 rounded-lg transition shadow-lg shadow-sky-500/10 cursor-pointer">Sign In</button>
+        </form>
+        <p id="login-msg" class="text-xs text-center font-medium mt-4"></p>
+    </div>
+
+    <script>
+        // --- Password Visibility Toggle ---
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                // Open Eye Icon
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />`;
+            } else {
+                passwordInput.type = 'password';
+                // Closed/Slash Eye Icon
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />`;
+            }
+        }
+
+        // --- Three.js Cinematic Intro & Background Animation ---
+        const canvas = document.getElementById('bg-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Background Particles
+        const particlesCount = 300;
+        const posArray = new Float32Array(particlesCount * 3);
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 15;
+        }
+        const particlesGeometry = new THREE.BufferGeometry();
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.025,
+            color: 0x38bdf8,
+            transparent: true,
+            opacity: 0.7,
+            blending: THREE.AdditiveBlending
+        });
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        // --- Build 3D Briefcase (Bag) ---
+        const briefcaseGroup = new THREE.Group();
+
+        const bodyGeo = new THREE.BoxGeometry(1.6, 1.0, 0.8);
+        const bodyMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.4, metalness: 0.8 });
+        const bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
+        briefcaseGroup.add(bodyMesh);
+
+        const lidGroup = new THREE.Group();
+        lidGroup.position.set(0, 0.5, -0.4);
+
+        const lidGeo = new THREE.BoxGeometry(1.6, 0.2, 0.8);
+        const lidMesh = new THREE.Mesh(lidGeo, bodyMat);
+        lidMesh.position.set(0, 0.1, 0.4);
+        lidGroup.add(lidMesh);
+
+        const coreGeo = new THREE.SphereGeometry(0.3, 16, 16);
+        const coreMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+        const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+        coreMesh.position.set(0, 0, 0);
+        briefcaseGroup.add(coreMesh);
+
+        briefcaseGroup.add(lidGroup);
+        scene.add(briefcaseGroup);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0x38bdf8, 3, 10);
+        pointLight.position.set(0, 0, 2);
+        scene.add(pointLight);
+
+        camera.position.z = 4;
+
+        let animationTime = 0;
+        let introCompleted = false;
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const delta = clock.getDelta();
+            animationTime += delta;
+
+            particlesMesh.rotation.y += 0.001;
+
+            if (!introCompleted) {
+                if (animationTime < 1.5) {
+                    briefcaseGroup.position.y = THREE.MathUtils.lerp(briefcaseGroup.position.y, 0, delta * 3);
+                    briefcaseGroup.rotation.y = animationTime * 2;
+                } else if (animationTime >= 1.5 && animationTime < 2.8) {
+                    lidGroup.rotation.x = THREE.MathUtils.lerp(lidGroup.rotation.x, -Math.PI / 1.5, delta * 4);
+                    coreMesh.scale.lerp(new THREE.Vector3(1.5, 1.5, 1.5), delta * 4);
+                } else {
+                    briefcaseGroup.scale.lerp(new THREE.Vector3(0, 0, 0), delta * 5);
+                    pointLight.intensity = THREE.MathUtils.lerp(pointLight.intensity, 0, delta * 5);
+                    
+                    if (!introCompleted) {
+                        introCompleted = true;
+                        document.getElementById('login-container').classList.add('visible');
+                    }
+                }
+            } else {
+                briefcaseGroup.visible = false;
+            }
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+
+        // --- Login Logic ---
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msgEl = document.getElementById('login-msg');
+            msgEl.innerText = "Signing in...";
+            msgEl.className = "text-xs text-center font-medium mt-4 text-sky-400";
+
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: document.getElementById('username').value,
+                        password: document.getElementById('password').value
+                    })
+                });
+                if(res.ok) { 
+                    window.location.href = '/admin'; 
+                } else { 
+                    msgEl.innerText = 'Invalid credentials.';
+                    msgEl.className = "text-xs text-center font-medium mt-4 text-rose-400";
+                }
+            } catch (err) {
+                msgEl.innerText = 'Connection error. Please try again.';
+                msgEl.className = "text-xs text-center font-medium mt-4 text-rose-400";
+            }
+        });
+    </script>
+</body>
+</html>

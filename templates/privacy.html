@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | Faizan Mir</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Three.js Library for Background Animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        if (localStorage.theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#090d16',
+                        cardBg: '#111827',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .card-3d {
+            background: linear-gradient(145deg, #162032, #0d1320);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+            backdrop-filter: blur(16px);
+        }
+        html:not(.dark) .card-3d {
+            background: linear-gradient(145deg, #ffffff, #f1f5f9);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05) inset;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 font-sans min-h-screen flex flex-col justify-between py-4 sm:py-8 px-3 sm:px-6 transition-colors duration-300 relative">
+
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[900px] h-[400px] sm:h-[500px] bg-gradient-to-tr from-sky-600/15 to-indigo-600/15 blur-[120px] sm:blur-[140px] rounded-full pointer-events-none"></div>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="relative z-10 w-full max-w-3xl lg:max-w-4xl mx-auto card-3d rounded-2xl sm:rounded-3xl p-5 sm:p-10 md:p-12 border border-slate-200 dark:border-white/10 shadow-2xl my-auto">
+        
+        <!-- Page Heading -->
+        <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-red-600 via-pink-500 to-red-500 bg-clip-text text-transparent mb-2 sm:mb-3">
+            Privacy Policy
+        </h1>
+        <p class="text-[11px] sm:text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-semibold mb-5 sm:mb-8">Last updated: August 2026</p>
+
+        <!-- Introduction -->
+        <p class="text-slate-700 dark:text-slate-300 mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base md:text-lg">
+            Welcome to my website. I, <strong>Faizan Mir</strong>, value your trust and take your privacy seriously. This Privacy Policy explains how your personal information is collected, used, and protected when you visit this site.
+        </p>
+
+        <!-- Sections -->
+        <div class="space-y-5 sm:space-y-8">
+
+            <!-- Information We Collect -->
+            <div>
+                <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-1 sm:mb-2 border-l-4 border-red-500 dark:border-red-400 pl-3 sm:pl-4 transition-all duration-500 hover:pl-5">
+                    Information We Collect
+                </h2>
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-xs sm:text-sm md:text-base">
+                    I only collect information that you voluntarily provide, such as your name, email address, or message when you contact me. No other personal data is collected without your consent.
+                </p>
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-xs sm:text-sm md:text-base mt-2">
+                    Additionally, non-identifiable information such as browser type, device, and pages visited may be collected automatically to improve website performance and usability.
+                </p>
+            </div>
+
+            <!-- How We Use Information -->
+            <div>
+                <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-1 sm:mb-2 border-l-4 border-green-500 dark:border-green-400 pl-3 sm:pl-4 transition-all duration-500 hover:pl-5">
+                    How We Use Information
+                </h2>
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-xs sm:text-sm md:text-base">
+                    The information you provide is used solely for responding to your inquiries, providing services, and improving the website. I do not sell, share, or distribute personal information to third parties for marketing purposes.
+                </p>
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-xs sm:text-sm md:text-base mt-2">
+                    Aggregated and anonymized data may be analyzed to understand website trends, visitor behavior, and overall engagement to enhance the content and user experience.
+                </p>
+            </div>
+
+            <!-- Cookies and Tracking -->
+            <div>
+                <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-1 sm:mb-2 border-l-4 border-yellow-500 dark:border-yellow-400 pl-3 sm:pl-4 transition-all duration-500 hover:pl-5">
+                    Cookies and Tracking
+                </h2>
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-xs sm:text-sm md:text-base">
+                    This website may use cookies or similar technologies to remember your preferences and enhance your browsing experience. Cookies do not store personal information unless voluntarily provided.
+                </p>
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-xs sm:text-sm md:text-base mt-2">
+                    You can choose to disable cookies in your browser settings, but some features may not function as intended without them.
+                </p>
+            </div>
+
+            <!-- Third-Party Services -->
+            <div>
+                <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-1 sm:mb-2 border-l-4 border-blue-500 dark:border-blue-400 pl-3 sm:pl-4 transition-all duration-500 hover:pl-5">
+                    Third-Party Services
+                </h2>
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-xs sm:text-sm md:text-base">
+                    This website may include embedded content from third-party platforms like Instagram, YouTube, or Facebook. These platforms may collect information about your interactions in accordance with their own privacy policies.
+                </p>
+            </div>
+
+            <!-- Data Security -->
+            <div>
+                <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-1 sm:mb-2 border-l-4 border-purple-500 dark:border-purple-400 pl-3 sm:pl-4 transition-all duration-500 hover:pl-5">
+                    Data Security
+                </h2>
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-xs sm:text-sm md:text-base">
+                    I implement reasonable technical and organizational measures to protect the data you provide. However, no method of transmission over the internet is completely secure, so I cannot guarantee absolute security.
+                </p>
+            </div>
+
+            <!-- Children's Privacy -->
+            <div>
+                <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-1 sm:mb-2 border-l-4 border-pink-500 dark:border-pink-400 pl-3 sm:pl-4 transition-all duration-500 hover:pl-5">
+                    Children's Privacy
+                </h2>
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-xs sm:text-sm md:text-base">
+                    This website is not intended for children under 13. I do not knowingly collect personal information from children. If I become aware of such data, it will be deleted immediately.
+                </p>
+            </div>
+
+            <!-- Your Rights -->
+            <div>
+                <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-1 sm:mb-2 border-l-4 border-teal-500 dark:border-teal-400 pl-3 sm:pl-4 transition-all duration-500 hover:pl-5">
+                    Your Rights
+                </h2>
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-xs sm:text-sm md:text-base">
+                    You have the right to access, update, or delete your personal data at any time. To exercise these rights, please contact me at the email provided below.
+                </p>
+            </div>
+
+            <!-- Contact -->
+            <div>
+                <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-1 sm:mb-2 border-l-4 border-indigo-500 dark:border-indigo-400 pl-3 sm:pl-4 transition-all duration-500 hover:pl-5">
+                    Contact
+                </h2>
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-xs sm:text-sm md:text-base">
+                    If you have any questions about this Privacy Policy or how your data is handled, you can reach me at:
+                    <a href="mailto:faizanmirpics@gmail.com" class="text-sky-600 dark:text-sky-400 underline hover:text-sky-700 dark:hover:text-sky-300 transition-colors">
+                        <strong>faizanmirpics@gmail.com</strong>
+                    </a>
+                </p>
+            </div>
+
+            <!-- Updates to Policy -->
+            <div>
+                <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-1 sm:mb-2 border-l-4 border-orange-500 dark:border-orange-400 pl-3 sm:pl-4 transition-all duration-500 hover:pl-5">
+                    Updates to this Policy
+                </h2>
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-xs sm:text-sm md:text-base">
+                    This Privacy Policy may be updated from time to time to reflect changes in practices or regulations. Please check back periodically to stay informed about how your information is protected.
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER WITH DYNAMIC YEAR -->
+    <footer class="relative z-10 w-full max-w-3xl lg:max-w-4xl mx-auto px-4 mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-slate-300 dark:border-slate-800 text-center text-xs text-slate-600 dark:text-slate-400 space-y-1">
+        <p>Faizan Mir &copy; <span id="current-year"></span>. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Automatically set current year in footer
+        const currentYear = new Date().getFullYear();
+        if(document.getElementById('current-year')) {
+            document.getElementById('current-year').textContent = currentYear;
+        }
+
+        // Three.js Background Particle Animation Script
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.createElement('div');
+            container.style.position = 'fixed';
+            container.style.top = '0'; container.style.left = '0';
+            container.style.width = '100vw'; container.style.height = '100vh';
+            container.style.zIndex = '-1'; container.style.pointerEvents = 'none';
+            document.body.prepend(container);
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            const particlesCount = 1000;
+            const posArray = new Float32Array(particlesCount * 3);
+            for(let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 15; }
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const material = new THREE.PointsMaterial({ size: 0.025, color: 0x38bdf8, transparent: true, opacity: 0.7 });
+            const mesh = new THREE.Points(geometry, material);
+            scene.add(mesh);
+            camera.position.z = 4;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                mesh.rotation.y += 0.001;
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        });
+    </script>
+</body>
+</html>

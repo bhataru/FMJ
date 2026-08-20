@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Faizan Mir</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Three.js Library for Background Animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        if (localStorage.theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#090d16',
+                        cardBg: '#111827',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .card-3d {
+            background: linear-gradient(145deg, #162032, #0d1320);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+            backdrop-filter: blur(16px);
+        }
+        html:not(.dark) .card-3d {
+            background: linear-gradient(145deg, #ffffff, #f1f5f9);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05) inset;
+        }
+        #menu-drawer { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* Continuous Full 360-degree Rotation Animation */
+        @keyframes fullSpin3D {
+            0% { transform: perspective(600px) rotateY(0deg); }
+            100% { transform: perspective(600px) rotateY(360deg); }
+        }
+
+        .text-3d-cursive {
+            font-family: 'Great Vibes', 'Pinyon Script', 'Brush Script MT', cursive, serif;
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: bold;
+            font-style: italic;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            transform-style: preserve-3d;
+            animation: fullSpin3D 10s linear infinite;
+            color: #f8fafc;
+            text-shadow: 
+                0 1px 0 #cbd5e1,
+                0 2px 0 #94a3b8,
+                0 3px 0 #64748b,
+                0 4px 0 #475569,
+                0 5px 10px rgba(0, 0, 0, 0.6),
+                0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        html:not(.dark) .text-3d-cursive {
+            color: #0f172a;
+            text-shadow: 
+                0 1px 0 #ffffff,
+                0 2px 0 #cbd5e1,
+                0 3px 0 #94a3b8,
+                0 4px 0 #64748b,
+                0 5px 15px rgba(15, 23, 42, 0.25),
+                0 2px 5px rgba(15, 23, 42, 0.15);
+        }
+        
+        .text-3d-cursive:hover {
+            animation-play-state: paused;
+        }
+
+        .drawer-link {
+            position: relative;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+        .drawer-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #38bdf8;
+            transition: width 0.3s ease-in-out;
+        }
+        .drawer-link:hover::after {
+            width: 100%;
+        }
+
+        /* Interactive 3D Cube Styles for Form Trigger */
+        .scene-container {
+            perspective: 1000px;
+            width: 100%;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .cube-3d {
+            width: 90px;
+            height: 90px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotateCube 12s infinite linear;
+            transition: transform 0.5s ease;
+        }
+
+        .scene-container:hover .cube-3d {
+            animation-play-state: paused;
+            transform: scale(1.1) rotateX(-20deg) rotateY(45deg);
+        }
+
+        .cube-face {
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(99, 102, 241, 0.3));
+            border: 2px solid rgba(56, 189, 248, 0.5);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 9px;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3) inset;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cube-face.front  { transform: rotateY(0deg) translateZ(45px); }
+        .cube-face.back   { transform: rotateY(180deg) translateZ(45px); }
+        .cube-face.right  { transform: rotateY(90deg) translateZ(45px); }
+        .cube-face.left   { transform: rotateY(-90deg) translateZ(45px); }
+        .cube-face.top    { transform: rotateX(90deg) translateZ(45px); }
+        .cube-face.bottom { transform: rotateX(-90deg) translateZ(45px); }
+
+        @keyframes rotateCube {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        /* Expand Animation for Form */
+        .form-expand-wrapper {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out;
+        }
+        .form-expand-wrapper.open {
+            max-height: 650px;
+            opacity: 1;
+        }
+
+        /* Info Sub-card Styles */
+        .info-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        html:not(.dark) .info-card {
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 15px 30px -10px rgba(56, 189, 248, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 font-sans min-h-screen relative flex flex-col justify-between py-6 sm:py-8 transition-colors duration-300 overflow-x-hidden">
+
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[900px] h-[500px] bg-gradient-to-tr from-sky-600/15 to-indigo-600/15 blur-[140px] rounded-full pointer-events-none"></div>
+
+    <!-- Header with 360-degree Rotating 3D Cursive Name -->
+    <header class="relative z-20 flex justify-between items-center w-full px-4 sm:px-12 mb-6">
+        <a href="/" class="py-2 inline-block">
+            <span class="text-3d-cursive">Faizan Mir</span>
+        </a>
+        <button onclick="toggleMenu()" class="flex items-center gap-2 bg-slate-200 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700/50 px-4 py-2 rounded-full text-slate-700 dark:text-slate-300 hover:text-sky-500 dark:hover:text-sky-400 hover:border-sky-500 hover:scale-105 transition shadow-lg text-xs font-semibold uppercase tracking-wider" title="Open Menu">
+            <i class="fa-solid fa-bars text-sm text-sky-500 dark:text-sky-400"></i>
+        </button>
+    </header>
+
+    <!-- Slide-out Drawer Menu -->
+    <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300" onclick="toggleMenu()"></div>
+    <div id="menu-drawer" class="fixed top-0 right-0 w-72 h-full bg-gradient-to-b from-indigo-950 via-purple-900 to-slate-950 text-white z-50 transform translate-x-full shadow-2xl border-l border-white/10 flex flex-col p-8">
+        <div class="flex justify-between items-center mb-10">
+            <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-amber-300 shadow-inner hover:scale-105 transition" title="Toggle Theme">
+                <i class="fa-solid fa-sun dark:hidden"></i>
+                <i class="fa-solid fa-moon hidden dark:inline"></i>
+            </button>
+            <button onclick="toggleMenu()" class="text-white/70 hover:text-white hover:scale-110 transition text-lg p-2"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <nav class="space-y-6 flex-1 text-lg font-medium">
+            <a href="/home" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link">Home</a>
+            <a href="/photos" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link">Photos</a>
+            <a href="/videos" onclick="toggleMenu()" class="block text-white hover:text-sky-400 drawer-link">Videos</a>
+            <a href="/contact" onclick="toggleMenu()" class="block text-white hover:text-sky-400 drawer-link">Contact</a>
+            <a href="/" onclick="toggleMenu()" class="block text-white hover:text-sky-400 drawer-link">About</a>
+        </nav>
+        <div class="text-xs text-white/40 pt-4 border-t border-white/10">Designed By Deadend</div>
+    </div>
+
+    <!-- MAIN RESPONSIVE CONTAINER -->
+    <main class="relative z-10 w-full max-w-4xl mx-auto px-4 my-auto">
+        <div class="card-3d rounded-3xl p-5 sm:p-10 border border-slate-200 dark:border-white/10 relative overflow-hidden">
+            
+            <!-- LIVE CLOCK & DATE WIDGET -->
+            <div class="flex flex-col sm:flex-row items-center justify-between bg-slate-200/60 dark:bg-slate-900/50 border border-slate-300 dark:border-slate-800/80 rounded-2xl px-4 py-2.5 mb-6 text-xs text-slate-700 dark:text-slate-300 gap-1 sm:gap-0">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span id="live-date" class="font-medium">Loading date...</span>
+                </div>
+                <div id="live-time" class="font-mono font-semibold text-sky-600 dark:text-sky-400">Loading time...</div>
+            </div>
+
+            <div class="text-center mb-2">
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-1">Contact Me</h1>
+                <p class="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-semibold" id="contact-subtitle">Interactive 3D Portal</p>
+            </div>
+
+            <!-- 3D Interactive Rotating Cube Trigger -->
+            <div id="cube-trigger-container" class="scene-container" onclick="openContactForm()">
+                <div class="cube-3d">
+                    <div class="cube-face front"><i class="fa-solid fa-envelope text-sky-400 text-xs mb-1"></i>Tap to Open</div>
+                    <div class="cube-face back"><i class="fa-solid fa-paper-plane text-sky-400 text-xs mb-1"></i>Connect</div>
+                    <div class="cube-face right"><i class="fa-solid fa-comments text-sky-400 text-xs mb-1"></i>Message</div>
+                    <div class="cube-face left"><i class="fa-solid fa-handshake text-sky-400 text-xs mb-1"></i>Pitch</div>
+                    <div class="cube-face top"><i class="fa-solid fa-bolt text-sky-400 text-xs mb-1"></i>Instant</div>
+                    <div class="cube-face bottom"><i class="fa-solid fa-shield-halved text-sky-400 text-xs mb-1"></i>Secure</div>
+                </div>
+            </div>
+            <p class="text-center text-[11px] text-slate-500 dark:text-slate-400 mb-6" id="cube-hint">Click the 3D rotating box to launch the contact form</p>
+
+            <!-- Contact Form (Expandable Wrapper) -->
+            <div id="contact-form-wrapper" class="form-expand-wrapper mb-6">
+                <form onsubmit="handleFormSubmit(event)" class="space-y-4 pt-4 border-t border-slate-300 dark:border-slate-800/80 text-xs">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-[11px] text-sky-500 font-semibold uppercase tracking-wider">Secure Message Channel</span>
+                        <button type="button" onclick="closeContactForm()" class="text-slate-400 hover:text-white text-[11px] underline">Close Form</button>
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 dark:text-slate-300 mb-1 font-medium">Your Name</label>
+                        <input type="text" id="contact-name" required class="w-full bg-slate-200/80 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700/60 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:border-sky-500 transition text-sm" placeholder="Enter your name">
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 dark:text-slate-300 mb-1 font-medium">Email Address</label>
+                        <input type="email" id="contact-email" required class="w-full bg-slate-200/80 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700/60 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:border-sky-500 transition text-sm" placeholder="Enter your email">
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 dark:text-slate-300 mb-1 font-medium">Message</label>
+                        <textarea rows="4" id="contact-message" required class="w-full bg-slate-200/80 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700/60 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:border-sky-500 transition resize-none text-sm" placeholder="Write your message..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 rounded-xl transition shadow-lg uppercase tracking-wider text-xs">Send via WhatsApp</button>
+                </form>
+            </div>
+
+            <!-- Success Alert Banner -->
+            <div id="success-alert" class="hidden mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-center text-xs font-semibold animate-pulse">
+                <i class="fa-solid fa-circle-check mr-1 text-sm"></i> Redirecting to WhatsApp...
+            </div>
+
+            <!-- 4 Info Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-slate-300 dark:border-slate-800/80">
+                
+                <!-- Address Card -->
+                <a href="https://www.google.com/maps/search/?api=1&query=123+Street+Name,+City,+Country" target="_blank" rel="noopener noreferrer" class="info-card rounded-2xl p-4 text-center group">
+                    <div class="w-10 h-10 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center text-base mb-2 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <h3 class="text-xs font-bold text-slate-900 dark:text-white mb-1">Address</h3>
+                    <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-tight">
+                        123 Street Name, City, Country
+                    </p>
+                </a>
+
+                <!-- Call Me Card -->
+                <div onclick="triggerCall()" class="info-card rounded-2xl p-4 text-center group relative z-30">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-base mb-2 group-hover:scale-110 transition mx-auto">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <h3 class="text-xs font-bold text-slate-900 dark:text-white mb-1">Call Me</h3>
+                    <p class="text-[11px] text-sky-600 dark:text-sky-400 font-medium">
+                        +91 70061 88940
+                    </p>
+                </div>
+                
+                <!-- Email Us Card -->
+                <div onclick="triggerEmail()" class="info-card rounded-2xl p-4 text-center group relative z-30">
+                    <div class="w-10 h-10 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center text-base mb-2 group-hover:scale-110 transition mx-auto">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <h3 class="text-xs font-bold text-slate-900 dark:text-white mb-1">Email Us</h3>
+                    <p class="text-[11px] text-sky-600 dark:text-sky-400 font-medium truncate w-full">
+                        faizanmirpics@gmail.com
+                    </p>
+                </div>
+
+                <!-- WhatsApp Card -->
+                <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" class="info-card rounded-2xl p-4 text-center group">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-base mb-2 group-hover:scale-110 transition">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <h3 class="text-xs font-bold text-slate-900 dark:text-white mb-1">WhatsApp</h3>
+                    <p class="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+                        Chat on WhatsApp
+                    </p>
+                </a>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- WEBSITE FOOTER -->
+    <footer class="relative z-10 w-full max-w-2xl lg:max-w-4xl mx-auto px-4 mt-12 pt-6 border-t border-slate-300 dark:border-slate-800 text-center text-xs sm:text-sm text-slate-600 dark:text-slate-400 space-y-2">
+        <p>Faizan Mir &copy; <span id="current-year"></span>. All rights reserved.</p>
+        <p class="space-x-2">
+            <a href="/privacy" class="hover:text-sky-500 dark:hover:text-sky-400 transition">Privacy Policy</a>
+            <span>&bull;</span>
+            <a href="/terms" class="hover:text-sky-500 dark:hover:text-sky-400 transition">Terms & Conditions</a>
+        </p>
+    </footer>
+
+    <script>
+        // Automatically sets the current year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Native Trigger Functions for Call and Email
+        function triggerCall() {
+            window.location.href = 'tel:+917006188940';
+        }
+
+        function triggerEmail() {
+            window.location.href = 'mailto:faizanmirpics@gmail.com';
+        }
+
+        // Live Clock and Date Ticker Script
+        function updateLiveClock() {
+            const now = new Date();
+            const dateOptions = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+            document.getElementById('live-date').textContent = now.toLocaleDateString(undefined, dateOptions);
+            document.getElementById('live-time').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+        setInterval(updateLiveClock, 1000);
+        updateLiveClock();
+
+        // Three.js Background Particle Animation Script
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.createElement('div');
+            container.style.position = 'fixed';
+            container.style.top = '0'; container.style.left = '0';
+            container.style.width = '100vw'; container.style.height = '100vh';
+            container.style.zIndex = '-1'; container.style.pointerEvents = 'none';
+            document.body.prepend(container);
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            const particlesCount = 800;
+            const posArray = new Float32Array(particlesCount * 3);
+            for(let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 15; }
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const material = new THREE.PointsMaterial({ size: 0.025, color: 0x38bdf8, transparent: true, opacity: 0.7 });
+            const mesh = new THREE.Points(geometry, material);
+            scene.add(mesh);
+            camera.position.z = 4;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                mesh.rotation.y += 0.001;
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        });
+
+        function toggleMenu() {
+            const drawer = document.getElementById('menu-drawer');
+            const backdrop = document.getElementById('menu-backdrop');
+            const isOpen = drawer.classList.contains('translate-x-0');
+            if (isOpen) {
+                drawer.classList.remove('translate-x-0');
+                drawer.classList.add('translate-x-full');
+                backdrop.classList.add('opacity-0');
+                setTimeout(() => backdrop.classList.add('hidden'), 300);
+            } else {
+                backdrop.classList.remove('hidden');
+                setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+                drawer.classList.remove('translate-x-full');
+                drawer.classList.add('translate-x-0');
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                html.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+
+        // Functions to open and close the contact form via 3D cube trigger
+        function openContactForm() {
+            document.getElementById('cube-trigger-container').style.display = 'none';
+            document.getElementById('cube-hint').style.display = 'none';
+            document.getElementById('contact-subtitle').textContent = 'Send a message or pitch';
+            
+            const wrapper = document.getElementById('contact-form-wrapper');
+            wrapper.classList.add('open');
+        }
+
+        function closeContactForm() {
+            const wrapper = document.getElementById('contact-form-wrapper');
+            wrapper.classList.remove('open');
+            
+            setTimeout(() => {
+                document.getElementById('cube-trigger-container').style.display = 'flex';
+                document.getElementById('cube-hint').style.display = 'block';
+                document.getElementById('contact-subtitle').textContent = 'Interactive 3D Portal';
+            }, 300);
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const message = document.getElementById('contact-message').value;
+
+            if (!name || !email || !message) return;
+
+            // Format message neatly for WhatsApp
+            const whatsappMessage = `*New Contact Form Message*%0A%0A*Name:* ${encodeURIComponent(name)}%0A*Email:* ${encodeURIComponent(email)}%0A*Message:* ${encodeURIComponent(message)}`;
+
+            document.getElementById('contact-form-wrapper').classList.remove('open');
+            document.getElementById('success-alert').classList.remove('hidden');
+
+            // Redirect straight to WhatsApp after a brief moment
+            setTimeout(() => {
+                window.open(`https://wa.me/919876543210?text=${whatsappMessage}`, '_blank');
+            }, 800);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videos - Collection | Faizan Mir</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Three.js Library for Background Animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        if (localStorage.theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#090d16',
+                        cardBg: '#111827',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .card-3d {
+            background: linear-gradient(145deg, #162032, #0d1320);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+            backdrop-filter: blur(16px);
+        }
+        html:not(.dark) .card-3d {
+            background: linear-gradient(145deg, #ffffff, #f1f5f9);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05) inset;
+        }
+        #menu-drawer { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* Continuous Full 360-degree Rotation Animation */
+        @keyframes fullSpin3D {
+            0% { transform: perspective(600px) rotateY(0deg); }
+            100% { transform: perspective(600px) rotateY(360deg); }
+        }
+
+        .text-3d-cursive {
+            font-family: 'Great Vibes', 'Pinyon Script', 'Brush Script MT', cursive, serif;
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: bold;
+            font-style: italic;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            transform-style: preserve-3d;
+            animation: fullSpin3D 10s linear infinite;
+            color: #f8fafc;
+            text-shadow: 
+                0 1px 0 #cbd5e1,
+                0 2px 0 #94a3b8,
+                0 3px 0 #64748b,
+                0 4px 0 #475569,
+                0 5px 10px rgba(0, 0, 0, 0.6),
+                0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        html:not(.dark) .text-3d-cursive {
+            color: #0f172a;
+            text-shadow: 
+                0 1px 0 #ffffff,
+                0 2px 0 #cbd5e1,
+                0 3px 0 #94a3b8,
+                0 4px 0 #64748b,
+                0 5px 15px rgba(15, 23, 42, 0.25),
+                0 2px 5px rgba(15, 23, 42, 0.15);
+        }
+        
+        .text-3d-cursive:hover {
+            animation-play-state: paused;
+        }
+
+        .drawer-link {
+            position: relative;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+        .drawer-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #38bdf8;
+            transition: width 0.3s ease-in-out;
+        }
+        .drawer-link:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 font-sans min-h-screen relative flex flex-col justify-between py-6 sm:py-8 transition-colors duration-300">
+
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-tr from-sky-600/15 to-indigo-600/15 blur-[140px] rounded-full pointer-events-none"></div>
+
+    <!-- Header with 360-degree Rotating 3D Cursive Name -->
+    <header class="relative z-20 flex justify-between items-center w-full px-6 sm:px-12 mb-6">
+        <a href="/" class="py-2 inline-block">
+            <span class="text-3d-cursive">Faizan Mir</span>
+        </a>
+        <button onclick="toggleMenu()" class="flex items-center gap-2 bg-slate-200 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700/50 px-4 py-2 rounded-full text-slate-700 dark:text-slate-300 hover:text-sky-500 dark:hover:text-sky-400 hover:border-sky-500 hover:scale-105 transition shadow-lg text-xs font-semibold uppercase tracking-wider" title="Open Menu">
+            <i class="fa-solid fa-bars text-sm text-sky-500 dark:text-sky-400"></i>
+        </button>
+    </header>
+
+    <!-- Slide-out Drawer Menu -->
+    <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300" onclick="toggleMenu()"></div>
+    <div id="menu-drawer" class="fixed top-0 right-0 w-72 h-full bg-gradient-to-b from-indigo-950 via-purple-900 to-slate-950 text-white z-50 transform translate-x-full shadow-2xl border-l border-white/10 flex flex-col p-8">
+        <div class="flex justify-between items-center mb-10">
+            <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-amber-300 shadow-inner hover:scale-105 transition" title="Toggle Theme">
+                <i class="fa-solid fa-sun dark:hidden"></i>
+                <i class="fa-solid fa-moon hidden dark:inline"></i>
+            </button>
+            <button onclick="toggleMenu()" class="text-white/70 hover:text-white hover:scale-110 transition text-lg p-2"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <nav class="space-y-6 flex-1 text-lg font-medium">
+            <a href="/home" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link">Home</a>
+            <a href="/photos" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link">Photos</a>
+            <a href="/videos" onclick="toggleMenu()" class="block text-white hover:text-sky-400 drawer-link">Videos</a>
+            <a href="/contact" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link">Contact</a>
+            <a href="/" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link">About</a>
+        </nav>
+        <div class="text-xs text-white/40 pt-4 border-t border-white/10">Designed By Deadend</div>
+    </div>
+
+    <!-- MAIN RESPONSIVE CONTAINER -->
+    <main class="relative z-10 w-full max-w-2xl lg:max-w-4xl mx-auto px-4 my-auto">
+        <div class="card-3d rounded-3xl p-5 sm:p-8 md:p-10 border border-slate-200 dark:border-white/10 relative">
+            
+            <!-- LIVE CLOCK & DATE WIDGET -->
+            <div class="flex flex-col sm:flex-row items-center justify-between bg-slate-200/60 dark:bg-slate-900/50 border border-slate-300 dark:border-slate-800/80 rounded-2xl px-5 py-3 mb-6 text-xs text-slate-700 dark:text-slate-300">
+                <div class="flex items-center gap-2 mb-1 sm:mb-0">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span id="live-date" class="font-medium">Loading date...</span>
+                </div>
+                <div id="live-time" class="font-mono font-semibold text-sky-600 dark:text-sky-400">Loading time...</div>
+            </div>
+
+            <div class="text-center mb-6 md:mb-8">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-1">Video Collection</h1>
+                <p class="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-semibold">On-ground video coverage</p>
+            </div>
+
+            <!-- Dynamic Category Filter Buttons Container -->
+            <div id="category-filters" class="flex flex-wrap items-center justify-center gap-2 mb-6 pb-4 border-b border-slate-300 dark:border-slate-800/80">
+                <!-- Buttons are injected dynamically via JavaScript -->
+            </div>
+
+            <!-- Dynamic Videos Grid Container -->
+            <div id="videos-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="col-span-full text-center py-8 text-slate-500 dark:text-slate-400 text-sm">
+                    <i class="fa-solid fa-spinner animate-spin text-sky-500 dark:text-sky-400 mb-2 text-lg"></i>
+                    <p>Loading videos...</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FULL STORY MODAL VIEW (Closes on clicking outside background) -->
+    <div id="story-modal" onclick="closeModal()" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <div class="card-3d w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl p-6 sm:p-8 border border-slate-300 dark:border-white/20 relative shadow-2xl transform scale-95 transition-transform duration-300" id="modal-content-box" onclick="event.stopPropagation()">
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- WEBSITE FOOTER -->
+    <footer class="relative z-10 w-full max-w-2xl lg:max-w-4xl mx-auto px-4 mt-12 pt-6 border-t border-slate-300 dark:border-slate-800 text-center text-sm text-slate-600 dark:text-slate-400 space-y-2">
+    <p>Faizan Mir &copy; <span id="current-year"></span>. All rights reserved.</p>
+    <p class="space-x-2">
+        <a href="/privacy" class="hover:text-sky-500 dark:hover:text-sky-400 transition">Privacy Policy</a>
+        <span>&bull;</span>
+        <a href="/terms" class="hover:text-sky-500 dark:hover:text-sky-400 transition">Terms & Conditions</a>
+    </p>
+</footer>
+
+<script>
+    // Automatically sets the current year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // Live Clock and Date Ticker Script
+        function updateLiveClock() {
+            const now = new Date();
+            const dateOptions = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+            document.getElementById('live-date').textContent = now.toLocaleDateString(undefined, dateOptions);
+            document.getElementById('live-time').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+        setInterval(updateLiveClock, 1000);
+        updateLiveClock();
+
+        // Helper to format story dates nicely
+        function formatStoryTimestamp(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) + ' at ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Close modal on Escape key press
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeModal();
+            }
+        });
+
+        // Three.js Background Particle Animation Script
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.createElement('div');
+            container.style.position = 'fixed';
+            container.style.top = '0'; container.style.left = '0';
+            container.style.width = '100vw'; container.style.height = '100vh';
+            container.style.zIndex = '-1'; container.style.pointerEvents = 'none';
+            document.body.prepend(container);
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            const particlesCount = 1000;
+            const posArray = new Float32Array(particlesCount * 3);
+            for(let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 15; }
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const material = new THREE.PointsMaterial({ size: 0.025, color: 0x38bdf8, transparent: true, opacity: 0.7 });
+            const mesh = new THREE.Points(geometry, material);
+            scene.add(mesh);
+            camera.position.z = 4;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                mesh.rotation.y += 0.001;
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        });
+
+        function toggleMenu() {
+            const drawer = document.getElementById('menu-drawer');
+            const backdrop = document.getElementById('menu-backdrop');
+            const isOpen = drawer.classList.contains('translate-x-0');
+            if (isOpen) {
+                drawer.classList.remove('translate-x-0');
+                drawer.classList.add('translate-x-full');
+                backdrop.classList.add('opacity-0');
+                setTimeout(() => backdrop.classList.add('hidden'), 300);
+            } else {
+                backdrop.classList.remove('hidden');
+                setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+                drawer.classList.remove('translate-x-full');
+                drawer.classList.add('translate-x-0');
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                html.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+
+        let allVideosData = [];
+        let currentCategory = 'All';
+
+        async function loadVideos() {
+            try {
+                const response = await fetch('/api/stories');
+                const result = await response.json();
+                
+                if (result.data && result.data.length > 0) {
+                    allVideosData = result.data.filter(item => {
+                        if (!item.image_url) return false;
+                        const urlLower = item.image_url.toLowerCase();
+                        const isVideo = urlLower.endsWith('.mp4') || urlLower.endsWith('.webm') || urlLower.endsWith('.mov') || urlLower.endsWith('.avi');
+                        return isVideo;
+                    }).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+                    buildCategoryFilters();
+                    renderVideos(currentCategory);
+                } else {
+                    document.getElementById('videos-container').innerHTML = `<div class="col-span-full text-center text-slate-500 dark:text-slate-400 text-sm py-6">No videos uploaded yet.</div>`;
+                }
+            } catch (e) {
+                console.error("Error loading videos:", e);
+                document.getElementById('videos-container').innerHTML = `<div class="col-span-full text-center text-red-500 dark:text-red-400 text-sm py-6">Failed to load videos.</div>`;
+            }
+        }
+
+        function buildCategoryFilters() {
+            const categories = ['All', ...new Set(allVideosData.map(v => v.category || 'General'))];
+            const filterContainer = document.getElementById('category-filters');
+            
+            filterContainer.innerHTML = categories.map(cat => `
+                <button onclick="filterByCategory('${cat}')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider transition border ${
+                    currentCategory === cat 
+                        ? 'bg-sky-500 text-white border-sky-500 shadow-md shadow-sky-500/20' 
+                        : 'bg-slate-200/80 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-800 hover:border-sky-500/50'
+                }">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+
+        function filterByCategory(category) {
+            currentCategory = category;
+            buildCategoryFilters();
+            renderVideos(category);
+        }
+
+        function renderVideos(category) {
+            const container = document.getElementById('videos-container');
+            const filtered = category === 'All' 
+                ? allVideosData 
+                : allVideosData.filter(v => (v.category || 'General') === category);
+
+            if (filtered.length > 0) {
+                container.innerHTML = filtered.map(v => `
+                    <div onclick="openStoryModal('${v.id || v._id}')" class="bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl overflow-hidden shadow-lg cursor-pointer group transition hover:border-sky-500/50 flex flex-col justify-between">
+                        <div class="w-full h-44 overflow-hidden bg-slate-200 dark:bg-slate-950 relative flex items-center justify-center">
+                            <video src="${v.image_url}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" muted preload="metadata" playsinline></video>
+                            <div class="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/10 transition">
+                                <div class="w-10 h-10 rounded-full bg-sky-500/80 backdrop-blur-sm text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                                    <i class="fa-solid fa-play ml-0.5 text-sm"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3.5">
+                            <div class="flex items-center justify-between text-[10px] text-sky-600 dark:text-sky-400 font-semibold mb-1">
+                                <span class="uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950/60 border border-sky-300 dark:border-sky-800/40">${v.category || 'General'}</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-900 dark:text-white truncate">${v.title || 'Untitled'}</h3>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = `<div class="col-span-full text-center text-slate-500 dark:text-slate-400 text-sm py-6">No videos found in this category.</div>`;
+            }
+        }
+
+        function openStoryModal(storyId) {
+            const story = allVideosData.find(s => (s.id == storyId || s._id == storyId));
+            if (!story) return;
+
+            const modalBody = document.getElementById('modal-body');
+            modalBody.innerHTML = `
+                <div class="space-y-6">
+                    ${story.image_url ? `<div class="w-full h-72 sm:h-80 rounded-2xl overflow-hidden shadow-inner bg-slate-950 flex items-center justify-center"><video src="${story.image_url}" class="w-full h-full object-contain" controls autoplay playsinline></video></div>` : ''}
+                    <div>
+                        <div class="flex items-center justify-between text-xs text-sky-500 font-semibold mb-3">
+                            <span class="uppercase tracking-wider px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20">${story.category || 'Report'}</span>
+                            <span class="text-slate-400">${formatStoryTimestamp(story.created_at)}</span>
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mb-4 leading-snug">${story.title}</h2>
+                        <div class="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line space-y-4">${story.content}</div>
+                    </div>
+                    <div class="pt-4 border-t border-slate-300 dark:border-slate-800 text-xs text-slate-500 flex justify-between items-center">
+                        <span>Published by <strong class="text-slate-800 dark:text-slate-300">${story.author || 'Faizan Mir'}</strong></span>
+                    </div>
+                </div>
+            `;
+
+            const modal = document.getElementById('story-modal');
+            const box = document.getElementById('modal-content-box');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                box.classList.remove('scale-95');
+                box.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('story-modal');
+            const box = document.getElementById('modal-content-box');
+            modal.classList.add('opacity-0');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        loadVideos();
+    </script>
+</body>
+</html>
