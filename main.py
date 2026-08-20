@@ -12,12 +12,12 @@ from fastapi.templating import Jinja2Templates
 from jose import JWTError, jwt
 from pydantic import BaseModel
 
-# Configuration (Updated to read from environment variables for deployment)
-MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")
-MYSQL_PORT = int(os.getenv("MYSQL_PORT", 3306))
-MYSQL_USER = os.getenv("MYSQL_USER", "root")
-MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "")
-MYSQL_DB = os.getenv("MYSQL_DB", "journalist_db")
+# Configuration (Reads both underscored and non-underscored Railway variables)
+MYSQL_HOST = os.getenv("MYSQLHOST") or os.getenv("MYSQL_HOST", "localhost")
+MYSQL_PORT = int(os.getenv("MYSQLPORT") or os.getenv("MYSQL_PORT", 3306))
+MYSQL_USER = os.getenv("MYSQLUSER") or os.getenv("MYSQL_USER", "root")
+MYSQL_PASSWORD = os.getenv("MYSQLPASSWORD") or os.getenv("MYSQL_PASSWORD", "")
+MYSQL_DB = os.getenv("MYSQLDATABASE") or os.getenv("MYSQL_DATABASE", "journalist_db")
 
 SECRET_KEY = os.getenv("SECRET_KEY", "your_super_secret_jwt_key_here")
 ALGORITHM = "HS256"
@@ -39,6 +39,29 @@ async def startup_db_pool():
         host=MYSQL_HOST, port=MYSQL_PORT, user=MYSQL_USER,
         password=MYSQL_PASSWORD, db=MYSQL_DB, autocommit=True, minsize=2, maxsize=10
     )
+    
+    # Automatically create required tables if they don't exist
+    async with db_pool.acquire() as conn:
+        async with conn.cursor() as cursor:
+            await cursor.execute("""
+                CREATE TABLE IF NOT EXISTS stories (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    title VARCHAR(255) NOT NULL,
+                    slug VARCHAR(255) NOT NULL,
+                    content TEXT NOT NULL,
+                    category VARCHAR(100) DEFAULT 'General',
+                    author VARCHAR(100) DEFAULT 'Faizan Mir',
+                    image_url VARCHAR(500),
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            """)
+            await cursor.execute("""
+                CREATE TABLE IF NOT EXISTS admins (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    username VARCHAR(100) UNIQUE NOT NULL,
+                    password_hash VARCHAR(255) NOT NULL
+                );
+            """)
 
 @app.on_event("shutdown")
 async def shutdown_db_pool():
