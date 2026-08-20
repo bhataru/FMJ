@@ -6,10 +6,10 @@
     <title>Faizan Mir | Journalist, Writer & Storyteller</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Three.js Library for Background Animation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        if (localStorage.theme === 'dark') {
+        // Apply theme immediately
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
@@ -17,275 +17,84 @@
 
         tailwind.config = {
             darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#090d16',
-                        cardBg: '#111827',
-                    }
-                }
-            }
+            theme: { extend: { colors: { darkBg: '#090d16', cardBg: '#111827' } } }
         }
     </script>
     <style>
-        .card-3d {
-            background: linear-gradient(145deg, #162032, #0d1320);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
-            backdrop-filter: blur(16px);
-        }
-        html:not(.dark) .card-3d {
-            background: linear-gradient(145deg, #ffffff, #f1f5f9);
-            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05) inset;
-        }
-        .profile-card-inner {
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1) inset;
-        }
-        html:not(.dark) .profile-card-inner {
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05) inset;
-        }
+        .card-3d { background: linear-gradient(145deg, #162032, #0d1320); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08) inset; backdrop-filter: blur(16px); }
+        html:not(.dark) .card-3d { background: linear-gradient(145deg, #ffffff, #f1f5f9); box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05) inset; }
+        .profile-card-inner { box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1) inset; }
+        html:not(.dark) .profile-card-inner { box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05) inset; }
+        
+        @keyframes fullSpin3D { 0% { transform: perspective(600px) rotateY(0deg); } 100% { transform: perspective(600px) rotateY(360deg); } }
+        .text-3d-cursive { font-family: 'Great Vibes', cursive; font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: bold; font-style: italic; display: inline-block; transform-style: preserve-3d; animation: fullSpin3D 10s linear infinite; color: #f8fafc; text-shadow: 0 1px 0 #cbd5e1, 0 2px 0 #94a3b8, 0 3px 0 #64748b, 0 4px 0 #475569, 0 5px 10px rgba(0, 0, 0, 0.6); }
+        html:not(.dark) .text-3d-cursive { color: #0f172a; text-shadow: 0 1px 0 #ffffff, 0 2px 0 #cbd5e1, 0 3px 0 #94a3b8, 0 4px 0 #64748b, 0 5px 15px rgba(15, 23, 42, 0.25); }
+        .text-3d-cursive:hover { animation-play-state: paused; }
+        
+        .drawer-link { position: relative; display: inline-block; transition: color 0.3s ease; }
+        .drawer-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background-color: #38bdf8; transition: width 0.3s ease-in-out; }
+        .drawer-link:hover::after { width: 100%; }
         #menu-drawer { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-
-        /* Continuous Full 360-degree Rotation Animation */
-        @keyframes fullSpin3D {
-            0% { transform: perspective(600px) rotateY(0deg); }
-            100% { transform: perspective(600px) rotateY(360deg); }
-        }
-
-        .text-3d-cursive {
-            font-family: 'Great Vibes', 'Pinyon Script', 'Brush Script MT', cursive, serif;
-            font-size: clamp(1.8rem, 3vw, 2.4rem);
-            font-weight: bold;
-            font-style: italic;
-            letter-spacing: 0.05em;
-            display: inline-block;
-            transform-style: preserve-3d;
-            animation: fullSpin3D 10s linear infinite;
-            color: #f8fafc;
-            text-shadow: 
-                0 1px 0 #cbd5e1,
-                0 2px 0 #94a3b8,
-                0 3px 0 #64748b,
-                0 4px 0 #475569,
-                0 5px 10px rgba(0, 0, 0, 0.6),
-                0 10px 20px rgba(0, 0, 0, 0.4);
-        }
-        
-        html:not(.dark) .text-3d-cursive {
-            color: #0f172a;
-            text-shadow: 
-                0 1px 0 #ffffff,
-                0 2px 0 #cbd5e1,
-                0 3px 0 #94a3b8,
-                0 4px 0 #64748b,
-                0 5px 15px rgba(15, 23, 42, 0.25),
-                0 2px 5px rgba(15, 23, 42, 0.15);
-        }
-        
-        .text-3d-cursive:hover {
-            animation-play-state: paused;
-        }
-
-        /* Custom Hamburger Menu Link Hover Underline Animation */
-        .drawer-link {
-            position: relative;
-            display: inline-block;
-            transition: color 0.3s ease;
-        }
-        .drawer-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 0;
-            background-color: #38bdf8;
-            transition: width 0.3s ease-in-out;
-        }
-        .drawer-link:hover::after {
-            width: 100%;
-        }
     </style>
 </head>
-<body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 font-sans min-h-screen relative flex flex-col justify-between py-6 sm:py-8 transition-colors duration-300 overflow-x-hidden">
+<body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 font-sans min-h-screen relative flex flex-col justify-between py-6 transition-colors duration-300 overflow-x-hidden">
 
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-tr from-sky-600/15 to-indigo-600/15 blur-[140px] rounded-full pointer-events-none"></div>
 
-    <!-- Header with 360-degree Rotating 3D Cursive Name -->
-    <header class="relative z-20 flex justify-between items-center w-full px-4 sm:px-12 mb-6 box-border">
-        <a href="/" class="py-2 inline-block">
-            <span class="text-3d-cursive">Faizan Mir</span>
-        </a>
-        <button onclick="toggleMenu()" class="flex items-center gap-2 bg-slate-200 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700/50 px-4 py-2 rounded-full text-slate-700 dark:text-slate-300 hover:text-sky-500 dark:hover:text-sky-400 hover:border-sky-500 hover:scale-105 transition shadow-lg text-xs font-semibold uppercase tracking-wider cursor-pointer" title="Open Menu">
-            <i class="fa-solid fa-bars text-sm text-sky-500 dark:text-sky-400"></i>
+    <header class="relative z-20 flex justify-between items-center w-full px-4 sm:px-12 mb-6">
+        <a href="/"><span class="text-3d-cursive">Faizan Mir</span></a>
+        <button onclick="toggleMenu()" class="bg-slate-200 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700/50 px-4 py-2 rounded-full text-slate-700 dark:text-slate-300 hover:text-sky-500 hover:border-sky-500 transition shadow-lg">
+            <i class="fa-solid fa-bars"></i>
         </button>
     </header>
 
-    <!-- Slide-out Drawer Menu -->
     <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300" onclick="toggleMenu()"></div>
-    <div id="menu-drawer" class="fixed top-0 right-0 w-72 h-full bg-gradient-to-b from-indigo-950 via-purple-900 to-slate-950 text-white z-50 transform translate-x-full shadow-2xl border-l border-white/10 flex flex-col p-8 box-border">
+    <div id="menu-drawer" class="fixed top-0 right-0 w-72 h-full bg-gradient-to-b from-indigo-950 via-purple-900 to-slate-950 text-white z-50 transform translate-x-full shadow-2xl border-l border-white/10 p-8 flex flex-col">
         <div class="flex justify-between items-center mb-10">
-            <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-amber-300 shadow-inner hover:scale-105 transition cursor-pointer" title="Toggle Theme">
-                <i class="fa-solid fa-sun dark:hidden"></i>
-                <i class="fa-solid fa-moon hidden dark:inline"></i>
-            </button>
-            <button onclick="toggleMenu()" class="text-white/70 hover:text-white hover:scale-110 transition text-lg p-2 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-white/10 text-amber-300"><i class="fa-solid fa-sun dark:hidden"></i><i class="fa-solid fa-moon hidden dark:inline"></i></button>
+            <button onclick="toggleMenu()" class="text-white/70 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <nav class="space-y-6 flex-1 text-lg font-medium">
-            <a href="/home" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link">Home</a>
-            <a href="/photos" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link">Photos</a>
-            <a href="/videos" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link">Videos</a>
-            <a href="/contact" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link">Contact</a>
-            <a href="/" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link">About</a>
+            <a href="/" class="block drawer-link">Home</a>
+            <a href="/photos" class="block drawer-link">Photos</a>
+            <a href="/videos" class="block drawer-link">Videos</a>
+            <a href="/contact" class="block drawer-link">Contact</a>
         </nav>
         <div class="text-xs text-white/40 pt-4 border-t border-white/10">Designed By Deadend</div>
     </div>
 
-    <!-- MAIN RESPONSIVE CONTAINER -->
-    <main class="relative z-10 w-full max-w-2xl lg:max-w-4xl mx-auto px-4 my-auto box-border">
-        <div class="card-3d rounded-3xl p-5 sm:p-8 md:p-10 border border-slate-200 dark:border-white/10 relative grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-stretch box-border">
-            
-            <!-- Profile Image Section with Hover Zoom Effect Only -->
-            <div class="md:col-span-5 relative w-full h-[400px] sm:h-[450px] md:h-auto min-h-[380px] rounded-2xl overflow-hidden profile-card-inner bg-slate-200 dark:bg-slate-900 group">
-                <img src="/static/uploads/faizan.png" alt="Faizan Mir" class="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-110 group-hover:rotate-1" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800'">
+    <main class="relative z-10 w-full max-w-4xl mx-auto px-4 my-auto">
+        <div class="card-3d rounded-3xl p-6 sm:p-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <div class="md:col-span-5 w-full h-[400px] rounded-2xl overflow-hidden profile-card-inner">
+                <img src="/static/uploads/faizan.png" alt="Faizan Mir" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110">
             </div>
-
-            <!-- Profile Details Section -->
-            <div class="md:col-span-7 flex flex-col justify-between text-left">
-               <div>
-                    <div class="mb-4 text-center md:text-left">
-                        <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-1">Faizan Mir</h1>
-                        <p class="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-semibold">Journalist | Writer | Storyteller</p>
-                    </div>
-
-                    <!-- Bio Text Blocks (No hover effects on texts) -->
-                    <div class="space-y-3 sm:space-y-4 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed text-left border-t border-slate-300 dark:border-slate-800/80 pt-4 sm:pt-6">
-                        <p>
-                            I'm <strong class="text-slate-900 dark:text-white">Faizan Mir</strong>, a Srinagar-based multimedia journalist with over nine years of experience reporting from Kashmir. My work focuses on <strong class="text-sky-600 dark:text-sky-300">human rights, conflict, environment, people, and the economy</strong>, telling stories that often remain unheard.
-                        </p>
-                        <p>
-                            Over the years, my in-depth reports and visual narratives have been published in leading national and international outlets, including <strong class="text-slate-900 dark:text-white">The Wire, AP, TRT World, The Quint, The Diplomat, and The Washington Post</strong>.
-                        </p>
-                        <p>
-                            With a <strong class="text-slate-900 dark:text-white">Bachelor's degree in Convergent Journalism (BJMC)</strong>, I work across formats as a reporter, visual storyteller, and multimedia journalist. My passion lies in documenting lived experiences with depth and sensitivity, amplifying underrepresented voices, and bringing nuanced perspectives from the region to a global audience.
-                        </p>
-                    </div>
-
-                    <!-- Bullet Point Highlights -->
-                    <div class="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-slate-300 dark:border-slate-800/80 space-y-2 sm:space-y-3 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-                        <div class="flex items-center space-x-3">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0"></span>
-                            <span><strong>9+ years of journalism experience</strong> covering Kashmir.</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0"></span>
-                            <span><strong>Published</strong> in top national and international outlets.</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0"></span>
-                            <span><strong>Expert in multimedia storytelling</strong> and visual reporting.</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0"></span>
-                            <span>Focus on <strong>human rights, conflict, and social issues</strong>.</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0"></span>
-                            <span>Passionate about <strong>amplifying underrepresented voices</strong>.</span>
-                        </div>
-                    </div>
-               </div>
-
-                <!-- Social Links with Hover -->
-                <div class="mt-6 pt-4 border-t border-slate-300 dark:border-slate-800/80 flex justify-center md:justify-start items-center space-x-4">
-                    <a href="#" class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-white flex items-center justify-center transition transform hover:scale-110 shadow-md" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-pink-600 hover:text-white dark:hover:bg-pink-600 dark:hover:text-white flex items-center justify-center transition transform hover:scale-110 shadow-md" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-sky-500 hover:text-white dark:hover:bg-sky-500 dark:hover:text-white flex items-center justify-center transition transform hover:scale-110 shadow-md" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+            <div class="md:col-span-7 space-y-4 text-center md:text-left">
+                <h1 class="text-4xl font-extrabold">Faizan Mir</h1>
+                <p class="text-sky-500 font-semibold uppercase tracking-widest text-xs">Journalist | Writer | Storyteller</p>
+                <p class="text-slate-600 dark:text-slate-300">Srinagar-based multimedia journalist focusing on human rights, conflict, environment, and social issues with 9+ years of experience.</p>
+                <div class="flex justify-center md:justify-start space-x-4 pt-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center hover:bg-sky-500 hover:text-white transition"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center hover:bg-sky-500 hover:text-white transition"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center hover:bg-sky-500 hover:text-white transition"><i class="fa-brands fa-twitter"></i></a>
                 </div>
             </div>
-
         </div>
     </main>
 
-    <!-- WEBSITE FOOTER with Hover Links -->
-    <footer class="relative z-10 w-full max-w-2xl lg:max-w-4xl mx-auto px-4 mt-12 pt-6 border-t border-slate-300 dark:border-slate-800 text-center text-sm text-slate-600 dark:text-slate-400 space-y-2 box-border">
-        <p>Faizan Mir &copy; <span id="current-year"></span>. All rights reserved.</p>
-        <p class="space-x-2">
-            <a href="/privacy" class="hover:text-sky-500 dark:hover:text-sky-400 transition">Privacy Policy</a>
-            <span>&bull;</span>
-            <a href="/terms" class="hover:text-sky-500 dark:hover:text-sky-400 transition">Terms & Conditions</a>
-        </p>
+    <footer class="relative z-10 text-center text-sm text-slate-500 dark:text-slate-400 py-6">
+        <p>&copy; <span id="year"></span> Faizan Mir. All rights reserved.</p>
     </footer>
 
     <script>
-        // Automatically sets the current year
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-        
-        // Three.js Background Particle Animation Script
-        document.addEventListener("DOMContentLoaded", () => {
-            const container = document.createElement('div');
-            container.style.position = 'fixed';
-            container.style.top = '0'; container.style.left = '0';
-            container.style.width = '100vw'; container.style.height = '100vh';
-            container.style.zIndex = '-1'; container.style.pointerEvents = 'none';
-            document.body.prepend(container);
-
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            container.appendChild(renderer.domElement);
-
-            const particlesCount = 1000;
-            const posArray = new Float32Array(particlesCount * 3);
-            for(let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 15; }
-
-            const geometry = new THREE.BufferGeometry();
-            geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-            const material = new THREE.PointsMaterial({ size: 0.025, color: 0x38bdf8, transparent: true, opacity: 0.7 });
-            const mesh = new THREE.Points(geometry, material);
-            scene.add(mesh);
-            camera.position.z = 4;
-
-            function animate() {
-                requestAnimationFrame(animate);
-                mesh.rotation.y += 0.001;
-                renderer.render(scene, camera);
-            }
-            animate();
-
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-        });
-
+        document.getElementById('year').textContent = new Date().getFullYear();
         function toggleMenu() {
-            const drawer = document.getElementById('menu-drawer');
-            const backdrop = document.getElementById('menu-backdrop');
-            const isOpen = drawer.classList.contains('translate-x-0');
-            if (isOpen) {
-                drawer.classList.remove('translate-x-0');
-                drawer.classList.add('translate-x-full');
-                backdrop.classList.add('opacity-0');
-                setTimeout(() => backdrop.classList.add('hidden'), 300);
-            } else {
-                backdrop.classList.remove('hidden');
-                setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
-                drawer.classList.remove('translate-x-full');
-                drawer.classList.add('translate-x-0');
-            }
+            const d = document.getElementById('menu-drawer'), b = document.getElementById('menu-backdrop');
+            d.classList.toggle('translate-x-0'); d.classList.toggle('translate-x-full');
+            b.classList.toggle('hidden'); setTimeout(() => b.classList.toggle('opacity-0'), 10);
         }
-
         function toggleTheme() {
-            const html = document.documentElement;
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                localStorage.theme = 'light';
-            } else {
-                html.classList.add('dark');
-                localStorage.theme = 'dark';
-            }
+            document.documentElement.classList.toggle('dark');
+            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
         }
     </script>
 </body>
