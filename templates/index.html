@@ -53,7 +53,7 @@
 
         .text-3d-cursive {
             font-family: 'Great Vibes', 'Pinyon Script', 'Brush Script MT', cursive, serif;
-            font-size: clamp(1.5rem, 4vw, 2.4rem);
+            font-size: clamp(1.6rem, 3.5vw, 2.4rem);
             font-weight: bold;
             font-style: italic;
             letter-spacing: 0.05em;
@@ -106,16 +106,16 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 font-sans min-h-screen relative flex flex-col justify-between py-4 sm:py-8 transition-colors duration-300 overflow-x-hidden">
+<body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 font-sans min-h-screen relative flex flex-col justify-between py-4 sm:py-8 px-3 sm:px-6 transition-colors duration-300 overflow-x-hidden">
 
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-tr from-sky-600/15 to-indigo-600/15 blur-[140px] rounded-full pointer-events-none"></div>
 
     <!-- Header with 360-degree Rotating 3D Cursive Name -->
-    <header class="relative z-20 flex justify-between items-center w-full px-4 sm:px-12 mb-4 sm:mb-6 box-border">
-        <a href="/" class="py-2 inline-block max-w-[200px] sm:max-w-none overflow-hidden">
+    <header class="relative z-20 flex justify-between items-center w-full max-w-4xl mx-auto mb-6">
+        <a href="/" class="py-2 inline-block">
             <span class="text-3d-cursive">Faizan Mir</span>
         </a>
-        <button onclick="toggleMenu()" class="flex items-center gap-2 bg-slate-200 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700/50 px-3.5 py-2 rounded-full text-slate-700 dark:text-slate-300 hover:text-sky-500 dark:hover:text-sky-400 hover:border-sky-500 transition shadow-lg text-xs font-semibold uppercase tracking-wider cursor-pointer" title="Open Menu">
+        <button onclick="toggleMenu()" class="flex items-center gap-2 bg-slate-200 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700/50 px-3.5 py-2 rounded-full text-slate-700 dark:text-slate-300 hover:text-sky-500 dark:hover:text-sky-400 hover:border-sky-500 hover:scale-105 transition shadow-lg text-xs font-semibold uppercase tracking-wider cursor-pointer" title="Open Menu">
             <i class="fa-solid fa-bars text-sm text-sky-500 dark:text-sky-400"></i>
         </button>
     </header>
@@ -141,11 +141,11 @@
     </div>
 
     <!-- MAIN RESPONSIVE CONTAINER -->
-    <main class="relative z-10 w-full max-w-2xl lg:max-w-4xl mx-auto px-3 sm:px-4 my-auto box-border">
-        <div class="card-3d rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-10 border border-slate-200 dark:border-white/10 relative grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-stretch box-border">
+    <main class="relative z-10 w-full max-w-4xl mx-auto my-auto">
+        <div class="card-3d rounded-3xl p-5 sm:p-8 md:p-10 border border-slate-200 dark:border-white/10 relative grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-stretch">
             
             <!-- Profile Image Section -->
-            <div class="md:col-span-5 relative w-full h-[320px] sm:h-[400px] md:h-auto min-h-[300px] rounded-xl sm:rounded-2xl overflow-hidden profile-card-inner bg-slate-200 dark:bg-slate-900 group">
+            <div class="md:col-span-5 relative w-full h-[350px] sm:h-[420px] md:h-auto min-h-[350px] rounded-2xl overflow-hidden profile-card-inner bg-slate-200 dark:bg-slate-900 group">
                 <img src="/static/uploads/faizan.png" alt="Faizan Mir" class="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-110 group-hover:rotate-1" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800'">
             </div>
 
@@ -154,7 +154,7 @@
                <div>
                     <div class="mb-4 text-center md:text-left">
                         <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-1">Faizan Mir</h1>
-                        <p class="text-[11px] sm:text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-semibold">Journalist | Writer | Storyteller</p>
+                        <p class="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-semibold">Journalist | Writer | Storyteller</p>
                     </div>
 
                     <!-- Bio Text Blocks -->
@@ -172,24 +172,24 @@
 
                     <!-- Bullet Point Highlights -->
                     <div class="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-slate-300 dark:border-slate-800/80 space-y-2 sm:space-y-3 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-                        <div class="flex items-start sm:items-center space-x-3">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0 mt-1.5 sm:mt-0"></span>
+                        <div class="flex items-center space-x-3">
+                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0"></span>
                             <span><strong>9+ years of journalism experience</strong> covering Kashmir.</span>
                         </div>
-                        <div class="flex items-start sm:items-center space-x-3">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0 mt-1.5 sm:mt-0"></span>
+                        <div class="flex items-center space-x-3">
+                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0"></span>
                             <span><strong>Published</strong> in top national and international outlets.</span>
                         </div>
-                        <div class="flex items-start sm:items-center space-x-3">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0 mt-1.5 sm:mt-0"></span>
+                        <div class="flex items-center space-x-3">
+                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0"></span>
                             <span><strong>Expert in multimedia storytelling</strong> and visual reporting.</span>
                         </div>
-                        <div class="flex items-start sm:items-center space-x-3">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0 mt-1.5 sm:mt-0"></span>
+                        <div class="flex items-center space-x-3">
+                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0"></span>
                             <span>Focus on <strong>human rights, conflict, and social issues</strong>.</span>
                         </div>
-                        <div class="flex items-start sm:items-center space-x-3">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0 mt-1.5 sm:mt-0"></span>
+                        <div class="flex items-center space-x-3">
+                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0"></span>
                             <span>Passionate about <strong>amplifying underrepresented voices</strong>.</span>
                         </div>
                     </div>
@@ -207,7 +207,7 @@
     </main>
 
     <!-- WEBSITE FOOTER -->
-    <footer class="relative z-10 w-full max-w-2xl lg:max-w-4xl mx-auto px-4 mt-8 sm:mt-12 pt-6 border-t border-slate-300 dark:border-slate-800 text-center text-xs sm:text-sm text-slate-600 dark:text-slate-400 space-y-2 box-border">
+    <footer class="relative z-10 w-full max-w-4xl mx-auto mt-12 pt-6 border-t border-slate-300 dark:border-slate-800 text-center text-sm text-slate-600 dark:text-slate-400 space-y-2">
         <p>Faizan Mir &copy; <span id="current-year"></span>. All rights reserved.</p>
         <p class="space-x-2">
             <a href="/privacy" class="hover:text-sky-500 dark:hover:text-sky-400 transition">Privacy Policy</a>
@@ -232,16 +232,16 @@
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Optimizes mobile rendering performance
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             container.appendChild(renderer.domElement);
 
-            const particlesCount = window.innerWidth < 768 ? 400 : 1000; // Reduce particle load for lower-end mobile GPUs
+            const particlesCount = window.innerWidth < 768 ? 400 : 1000;
             const posArray = new Float32Array(particlesCount * 3);
             for(let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 15; }
 
             const geometry = new THREE.BufferGeometry();
             geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-            const material = new THREE.PointsMaterial({ size: 0.03, color: 0x38bdf8, transparent: true, opacity: 0.7 });
+            const material = new THREE.PointsMaterial({ size: 0.025, color: 0x38bdf8, transparent: true, opacity: 0.7 });
             const mesh = new THREE.Points(geometry, material);
             scene.add(mesh);
             camera.position.z = 4;
