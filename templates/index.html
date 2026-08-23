@@ -94,13 +94,8 @@
         .drawer-link:hover::after {
             width: 100%;
         }
-        /* Specific line colors for links */
-        .drawer-link-contact::after {
-            background-color: #fbbf24; /* Yellow */
-        }
-        .drawer-link-about::after {
-            background-color: #38bdf8; /* Blue */
-        }
+        .drawer-link-contact::after { background-color: #fbbf24; }
+        .drawer-link-about::after { background-color: #38bdf8; }
     </style>
 </head>
 <body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 font-sans min-h-screen relative flex flex-col justify-between py-6 sm:py-8 transition-colors duration-300 overflow-x-hidden">
@@ -141,17 +136,14 @@
     <!-- MAIN WRAPPER CONTAINER -->
     <main class="relative z-10 w-full px-2 sm:px-4 my-auto box-border flex items-start gap-3 sm:gap-6">
         
-        <!-- Truly Floating Borderless Icons (No Sidebar Box Container) -->
+        <!-- Floating Navigation Icons -->
         <div class="flex flex-col gap-6 flex-shrink-0 sticky top-28 pl-1 sm:pl-2">
-            <!-- Home Icon -->
             <a href="/home" class="w-10 h-10 flex items-center justify-center bg-transparent hover:scale-125 transition-transform group border-0 outline-none shadow-none" title="Home">
                 <i class="fa-solid fa-house text-emerald-500 text-xl transition-transform drop-shadow-[0_2px_8px_rgba(16,185,129,0.4)]"></i>
             </a>
-            <!-- Photos Icon -->
             <a href="/photos" class="w-10 h-10 flex items-center justify-center bg-transparent hover:scale-125 transition-transform group border-0 outline-none shadow-none" title="Photos">
                 <i class="fa-solid fa-images text-purple-500 text-xl transition-transform drop-shadow-[0_2px_8px_rgba(168,85,247,0.4)]"></i>
             </a>
-            <!-- Videos Icon -->
             <a href="/videos" class="w-10 h-10 flex items-center justify-center bg-transparent hover:scale-125 transition-transform group border-0 outline-none shadow-none" title="Videos">
                 <i class="fa-solid fa-video text-rose-500 text-xl transition-transform drop-shadow-[0_2px_8px_rgba(244,63,94,0.4)]"></i>
             </a>
@@ -173,7 +165,6 @@
                         <p class="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-semibold">Journalist | Writer | Storyteller</p>
                     </div>
 
-                    <!-- Bio Text Blocks -->
                     <div class="space-y-3 sm:space-y-4 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed text-left border-t border-slate-300 dark:border-slate-800/80 pt-4 sm:pt-6">
                         <p>
                             I'm <strong class="text-slate-900 dark:text-white">Faizan Mir</strong>, a Srinagar-based multimedia journalist with over nine years of experience reporting from Kashmir. My work focuses on <strong class="text-sky-600 dark:text-sky-300">human rights, conflict, environment, people, and the economy</strong>, telling stories that often remain unheard.
@@ -186,7 +177,6 @@
                         </p>
                     </div>
 
-                    <!-- Bullet Point Highlights -->
                     <div class="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-slate-300 dark:border-slate-800/80 space-y-2 sm:space-y-3 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
                         <div class="flex items-center space-x-3">
                             <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0"></span>
@@ -211,7 +201,6 @@
                     </div>
                </div>
 
-                <!-- Social Links -->
                 <div class="mt-6 pt-4 border-t border-slate-300 dark:border-slate-800/80 flex justify-center md:justify-start items-center space-x-4">
                     <a href="#" class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-white flex items-center justify-center transition transform hover:scale-110 shadow-md border-0" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
                     <a href="#" class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-pink-600 hover:text-white dark:hover:bg-pink-600 dark:hover:text-white flex items-center justify-center transition transform hover:scale-110 shadow-md border-0" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
@@ -222,7 +211,7 @@
         </div>
     </main>
 
-    <!-- LATEST STORIES SECTION (Dynamic Database Loop with Media) -->
+    <!-- LATEST STORIES SECTION -->
     <section class="relative z-10 w-full max-w-3xl lg:max-w-5xl mx-auto px-4 mt-12 mb-4">
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
@@ -235,17 +224,12 @@
             {% for story in stories %}
             <article class="card-3d rounded-2xl border border-slate-200 dark:border-white/10 flex flex-col justify-between overflow-hidden transition hover:-translate-y-1">
                 
-                <!-- Media Display (Image or Video from Database) -->
-                <div class="w-full h-44 bg-slate-200 dark:bg-slate-900 relative overflow-hidden">
-                    {% if story.video_url %}
-                        <video src="{{ story.video_url }}" class="w-full h-full object-cover" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
-                        <span class="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-full backdrop-blur-sm">
-                            <i class="fa-solid fa-video text-rose-400 mr-1"></i> Video
-                        </span>
-                    {% elif story.image_url %}
-                        <img src="{{ story.image_url }}" alt="{{ story.title }}" class="w-full h-full object-cover">
+                <!-- Media Display Box -->
+                <div class="w-full h-44 bg-slate-200 dark:bg-slate-900 relative overflow-hidden flex items-center justify-center">
+                    {% if story.image_url %}
+                        <img src="{{ story.image_url }}" alt="{{ story.title }}" class="absolute inset-0 w-full h-full object-cover">
                     {% else %}
-                        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800" alt="Default" class="w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800" alt="Default" class="absolute inset-0 w-full h-full object-cover">
                     {% endif %}
                 </div>
 
@@ -255,16 +239,16 @@
                         <span class="text-[10px] uppercase tracking-widest text-sky-500 font-bold">{{ story.category|default('Journalism') }}</span>
                         <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white mt-1 mb-2 leading-snug">{{ story.title }}</h3>
                         <p class="text-xs text-slate-600 dark:text-slate-400 line-clamp-3">
-                            {{ story.summary|default(story.content) }}
+                            {{ story.content }}
                         </p>
                     </div>
 
                     <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-[11px] text-slate-500">
-                        <a href="/story/{{ story.id }}" class="text-sky-600 dark:text-sky-400 font-semibold hover:underline flex items-center gap-1">
+                        <button onclick="openArticleModal('{{ story.title|e }}', '{{ story.category|default('Journalism')|e }}', `{{ story.content|safe }}`)" class="text-sky-600 dark:text-sky-400 font-semibold hover:underline flex items-center gap-1 cursor-pointer bg-transparent border-0 p-0">
                             <span>Read Report</span>
                             <i class="fa-solid fa-arrow-right-long"></i>
-                        </a>
-                        <span>{{ story.date_posted|default('') }}</span>
+                        </button>
+                        <span>{{ story.created_at.strftime('%b %d, %Y') if story.created_at else '' }}</span>
                     </div>
                 </div>
 
@@ -272,6 +256,18 @@
             {% endfor %}
         </div>
     </section>
+
+    <!-- ARTICLE POPUP MODAL (Click outside to close) -->
+    <div id="article-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300" onclick="closeArticleModal(event)">
+        <div id="modal-content-box" class="card-3d w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-white/20 relative shadow-2xl transform scale-95 transition-transform duration-300" onclick="event.stopPropagation()">
+            <button onclick="closeModalDirect()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:scale-110 transition cursor-pointer border-0">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <span id="modal-category" class="text-[11px] uppercase tracking-widest text-sky-500 font-bold"></span>
+            <h2 id="modal-title" class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-1 mb-4 leading-snug"></h2>
+            <div id="modal-body" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed space-y-4 pt-2 border-t border-slate-300 dark:border-slate-800"></div>
+        </div>
+    </div>
 
     <!-- WEBSITE FOOTER -->
     <footer class="relative z-10 w-full max-w-3xl lg:max-w-5xl mx-auto px-4 mt-8 pt-6 border-t border-slate-300 dark:border-slate-800 text-center text-sm text-slate-600 dark:text-slate-400 space-y-2 box-border">
@@ -286,6 +282,40 @@
     <script>
         document.getElementById('current-year').textContent = new Date().getFullYear();
         
+        // Modal functions for opening/closing articles
+        function openArticleModal(title, category, content) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-category').textContent = category;
+            document.getElementById('modal-body').innerHTML = content.replace(/\n/g, '<br>');
+            
+            const modal = document.getElementById('article-modal');
+            const box = document.getElementById('modal-content-box');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                box.classList.remove('scale-95');
+                box.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeArticleModal(event) {
+            // Closes only if the dark backdrop itself is clicked
+            if (event.target.id === 'article-modal') {
+                closeModalDirect();
+            }
+        }
+
+        function closeModalDirect() {
+            const modal = document.getElementById('article-modal');
+            const box = document.getElementById('modal-content-box');
+            modal.classList.add('opacity-0');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
         // Three.js Background Particle Animation
         document.addEventListener("DOMContentLoaded", () => {
             const container = document.createElement('div');
