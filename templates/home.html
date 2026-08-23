@@ -195,6 +195,12 @@
                         </div>
 
                     </article>
+                    {% else %}
+                    <!-- Empty State Fallback -->
+                    <div class="col-span-full text-center py-16">
+                        <i class="fa-solid fa-folder-open text-4xl text-slate-400 mb-3"></i>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm font-medium">No stories have been uploaded or saved to the database yet.</p>
+                    </div>
                     {% endfor %}
                 </div>
             </section>
