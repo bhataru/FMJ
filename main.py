@@ -119,7 +119,19 @@ async def get_current_admin(request: Request):
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    stories = []
+    if db_pool:
+        try:
+            async with db_pool.acquire() as conn:
+                async with conn.cursor(aiomysql.DictCursor) as cursor:
+                    await cursor.execute(
+                        "SELECT id, title, slug, content, category, author, image_url, created_at FROM stories ORDER BY created_at DESC LIMIT 6"
+                    )
+                    stories = await cursor.fetchall()
+        except Exception as e:
+            print(f"Database query error: {e}")
+            
+    return templates.TemplateResponse("index.html", {"request": request, "stories": stories})
 
 @app.get("/home", response_class=HTMLResponse)
 async def home_page(request: Request):
@@ -135,7 +147,18 @@ async def videos_page(request: Request):
 
 @app.get("/about", response_class=HTMLResponse)
 async def about_page(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    stories = []
+    if db_pool:
+        try:
+            async with db_pool.acquire() as conn:
+                async with conn.cursor(aiomysql.DictCursor) as cursor:
+                    await cursor.execute(
+                        "SELECT id, title, slug, content, category, author, image_url, created_at FROM stories ORDER BY created_at DESC LIMIT 6"
+                    )
+                    stories = await cursor.fetchall()
+        except Exception as e:
+            print(f"Database query error: {e}")
+    return templates.TemplateResponse("index.html", {"request": request, "stories": stories})
 
 @app.get("/contact", response_class=HTMLResponse)
 async def contact_page(request: Request):
