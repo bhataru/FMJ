@@ -39,7 +39,7 @@
         }
         #menu-drawer { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        /* Static 3D Cursive Name Style (Rotation Removed) */
+        /* Static 3D Cursive Name Style */
         .text-3d-cursive {
             font-family: 'Great Vibes', 'Pinyon Script', 'Brush Script MT', cursive, serif;
             font-size: clamp(1.6rem, 3.5vw, 2.4rem);
@@ -103,7 +103,7 @@
         </button>
     </header>
 
-    <!-- Slide-out Drawer Menu Matching Index.html -->
+    <!-- Slide-out Drawer Menu -->
     <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300" onclick="toggleMenu()"></div>
     <div id="menu-drawer" class="fixed top-0 right-0 w-72 h-full bg-gradient-to-b from-indigo-950 via-purple-900 to-slate-950 text-white z-50 transform translate-x-full shadow-2xl border-l border-white/10 flex flex-col p-8 box-border">
         <div class="flex justify-between items-center mb-10">
@@ -124,7 +124,7 @@
     </div>
 
     <!-- MAIN RESPONSIVE CONTAINER -->
-    <main class="relative z-10 w-full max-w-4xl mx-auto my-auto px-4 sm:px-6">
+    <main class="relative z-10 w-full max-w-6xl mx-auto my-auto px-4 sm:px-6">
         <div class="card-3d rounded-3xl p-5 sm:p-8 md:p-10 border border-slate-200 dark:border-white/10 relative">
             
             <!-- LIVE CLOCK & DATE WIDGET -->
@@ -138,16 +138,64 @@
 
             <div class="text-center mb-6 md:mb-8">
                 <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-1">Recent Stories</h1>
-                <p class="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-semibold">Active Stories Feed (Latest 10)</p>
+                <p class="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-semibold">Active Stories Feed</p>
             </div>
 
-            <!-- Stories list wrapper -->
-            <div id="stories-container" class="space-y-6 pt-4 border-t border-slate-300 dark:border-slate-800/80">
-                <div class="text-center py-8 text-slate-500 dark:text-slate-400 text-sm">
-                    <i class="fa-solid fa-spinner animate-spin text-sky-500 dark:text-sky-400 mb-2 text-lg"></i>
-                    <p>Loading stories...</p>
+            <!-- Stories Grid Section -->
+            <section id="stories-section">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {% for story in stories %}
+                    <article 
+                        data-title="{{ story.title|e }}" 
+                        data-category="{{ story.category|default('Journalism')|e }}" 
+                        data-content="{{ story.content|e }}" 
+                        data-media="{{ story.image_url|default(story.video_url, true)|e }}" 
+                        data-media-type="{% if story.video_url or (story.image_url and story.image_url.endswith('.mp4')) %}video{% else %}image{% endif %}"
+                        onclick="handleCardClick(this)" 
+                        class="card-3d rounded-2xl border border-slate-200 dark:border-white/10 flex flex-col justify-between overflow-hidden transition hover:-translate-y-1 cursor-pointer group">
+                        
+                        <!-- Media Display Box -->
+                        <div class="w-full h-44 bg-slate-200 dark:bg-slate-900 relative overflow-hidden flex items-center justify-center">
+                            {% if story.video_url %}
+                                <video src="{{ story.video_url }}" class="absolute inset-0 w-full h-full object-cover" muted preload="metadata"></video>
+                                <div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition">
+                                    <i class="fa-solid fa-play text-white text-2xl drop-shadow-md"></i>
+                                </div>
+                            {% elif story.image_url and story.image_url.endswith('.mp4') %}
+                                <video src="{{ story.image_url }}" class="absolute inset-0 w-full h-full object-cover" muted preload="metadata"></video>
+                                <div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition">
+                                    <i class="fa-solid fa-play text-white text-2xl drop-shadow-md"></i>
+                                </div>
+                            {% elif story.image_url %}
+                                <img src="{{ story.image_url }}" alt="{{ story.title }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800';">
+                            {% else %}
+                                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800" alt="Default" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            {% endif %}
+                        </div>
+
+                        <!-- Content Area -->
+                        <div class="p-4 sm:p-5 flex flex-col justify-between flex-1">
+                            <div>
+                                <span class="text-[10px] uppercase tracking-widest text-sky-500 font-bold">{{ story.category|default('Journalism') }}</span>
+                                <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white mt-1 mb-2 leading-snug group-hover:text-sky-500 transition-colors">{{ story.title }}</h3>
+                                <p class="text-xs text-slate-600 dark:text-slate-400 line-clamp-3">
+                                    {{ story.content }}
+                                </p>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-[11px] text-slate-500">
+                                <span class="text-sky-600 dark:text-sky-400 font-semibold flex items-center gap-1 group-hover:underline">
+                                    <span>Read Report</span>
+                                    <i class="fa-solid fa-arrow-right-long"></i>
+                                </span>
+                                <span>{{ story.created_at.strftime('%b %d, %Y') if story.created_at else '' }}</span>
+                            </div>
+                        </div>
+
+                    </article>
+                    {% endfor %}
                 </div>
-            </div>
+            </section>
 
         </div>
     </main>
@@ -169,7 +217,7 @@
     </div>
 
     <!-- WEBSITE FOOTER -->
-    <footer class="relative z-10 w-full max-w-4xl mx-auto mt-12 mb-6 px-4 pt-6 border-t border-slate-300 dark:border-slate-800 text-center text-sm text-slate-600 dark:text-slate-400 space-y-2">
+    <footer class="relative z-10 w-full max-w-5xl mx-auto mt-12 mb-6 px-4 pt-6 border-t border-slate-300 dark:border-slate-800 text-center text-sm text-slate-600 dark:text-slate-400 space-y-2 box-border">
         <p>Faizan Mir &copy; <span id="current-year"></span>. All rights reserved.</p>
         <p class="space-x-2">
             <a href="/privacy" class="hover:text-sky-500 dark:hover:text-sky-400 transition">Privacy Policy</a>
@@ -191,14 +239,67 @@
         setInterval(updateLiveClock, 1000);
         updateLiveClock();
 
-        function formatStoryTimestamp(dateString) {
-            if (!dateString) return '';
-            const date = new Date(dateString);
-            if (isNaN(date)) return dateString;
-            return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) + ' at ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        // Safe card click handler using data attributes
+        function handleCardClick(element) {
+            const title = element.getAttribute('data-title');
+            const category = element.getAttribute('data-category');
+            const content = element.getAttribute('data-content');
+            const media = element.getAttribute('data-media');
+            const mediaType = element.getAttribute('data-media-type');
+            openArticleModal(title, category, content, media, mediaType);
         }
 
-        // Three.js Background Particle Animation Script
+        // Modal functions for opening/closing articles
+        function openArticleModal(title, category, content, media, mediaType) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-category').textContent = category;
+            document.getElementById('modal-body').innerHTML = content.replace(/\n/g, '<br>');
+            
+            const mediaContainer = document.getElementById('modal-media-container');
+            if (media && media.trim() !== '') {
+                mediaContainer.classList.remove('hidden');
+                if (mediaType === 'video') {
+                    mediaContainer.innerHTML = `<video src="${media}" class="w-full max-h-[350px] object-contain bg-black" controls autoplay></video>`;
+                } else {
+                    mediaContainer.innerHTML = `<img src="${media}" class="w-full max-h-[350px] object-cover" alt="${title}">`;
+                }
+            } else {
+                mediaContainer.classList.add('hidden');
+                mediaContainer.innerHTML = '';
+            }
+            
+            const modal = document.getElementById('article-modal');
+            const box = document.getElementById('modal-content-box');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                box.classList.remove('scale-95');
+                box.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeArticleModal(event) {
+            if (event.target.id === 'article-modal') {
+                closeModalDirect();
+            }
+        }
+
+        function closeModalDirect() {
+            const modal = document.getElementById('article-modal');
+            const box = document.getElementById('modal-content-box');
+            
+            const videoEl = modal.querySelector('video');
+            if(videoEl) { videoEl.pause(); }
+
+            modal.classList.add('opacity-0');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Three.js Background Particle Animation
         document.addEventListener("DOMContentLoaded", () => {
             const container = document.createElement('div');
             container.style.position = 'fixed';
@@ -211,10 +312,9 @@
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             container.appendChild(renderer.domElement);
 
-            const particlesCount = window.innerWidth < 768 ? 400 : 1000;
+            const particlesCount = 1000;
             const posArray = new Float32Array(particlesCount * 3);
             for(let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 15; }
 
@@ -266,146 +366,6 @@
                 localStorage.theme = 'dark';
             }
         }
-
-        function renderMediaHtml(url, customClass = "w-full h-full object-cover") {
-            if (!url) return '';
-            const ext = url.split('.').pop().toLowerCase();
-            const isVideo = ['mp4', 'webm', 'ogg', 'mov'].includes(ext);
-
-            if (isVideo) {
-                return `
-                    <video controls preload="metadata" class="${customClass}">
-                        <source src="${url}" type="video/${ext === 'mov' ? 'quicktime' : ext}">
-                        Your browser does not support the video tag.
-                    </video>
-                `;
-            } else {
-                return `<img src="${url}" alt="Story Media" class="${customClass}">`;
-            }
-        }
-
-        let allStoriesData = [];
-
-        async function loadStories() {
-            const container = document.getElementById('stories-container');
-            try {
-                const response = await fetch('/api/stories');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const result = await response.json();
-                
-                const storiesArray = Array.isArray(result) ? result : (result.data || []);
-
-                if (storiesArray.length > 0) {
-                    let sortedStories = storiesArray.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-                    allStoriesData = sortedStories.slice(0, 10);
-
-                    const isDesktop = window.innerWidth >= 768;
-
-                    if (!isDesktop) {
-                        // ================= MOBILE VIEW =================
-                        container.innerHTML = allStoriesData.map(s => `
-                            <div class="bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl overflow-hidden shadow-lg mb-4">
-                                ${s.image_url ? `<div class="w-full h-52 overflow-hidden bg-slate-200 dark:bg-slate-950 flex-shrink-0">${renderMediaHtml(s.image_url)}</div>` : ''}
-                                <div class="p-5 flex flex-col justify-between">
-                                    <div>
-                                        <div class="flex items-center justify-between text-xs text-sky-600 dark:text-sky-400 font-medium mb-2">
-                                            <span class="uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950/60 border border-sky-300 dark:border-sky-800/40">${s.category || 'Report'}</span>
-                                            <span class="text-slate-500 dark:text-slate-400">${formatStoryTimestamp(s.created_at)}</span>
-                                        </div>
-                                        <h3 class="text-base font-bold text-slate-900 dark:text-white mb-1.5 leading-snug truncate">${s.title}</h3>
-                                        <p class="text-xs text-slate-700 dark:text-slate-300 line-clamp-3 leading-relaxed">${s.content}</p>
-                                    </div>
-                                    <div class="flex items-center justify-between pt-3 mt-4 border-t border-slate-200 dark:border-slate-800/60 text-xs">
-                                        <span class="text-slate-500 dark:text-slate-400">By <strong class="text-slate-800 dark:text-slate-300">${s.author || 'Faizan Mir'}</strong></span>
-                                        <button onclick="openStoryModal('${s.id || s._id}')" class="text-sky-500 dark:text-sky-400 font-semibold hover:underline flex items-center gap-1 cursor-pointer">View More <i class="fa-solid fa-arrow-right text-[10px]"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('');
-                    } else {
-                        // ================= DESKTOP VIEW =================
-                        container.innerHTML = allStoriesData.map(s => `
-                            <div class="bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl overflow-hidden shadow-lg flex items-stretch h-[280px] mb-6">
-                                ${s.image_url ? `<div class="w-2/5 h-full overflow-hidden bg-slate-200 dark:bg-slate-950 flex-shrink-0">${renderMediaHtml(s.image_url)}</div>` : ''}
-                                <div class="p-8 flex flex-col justify-between flex-1 h-full overflow-hidden">
-                                    <div>
-                                        <div class="flex items-center justify-between text-xs text-sky-600 dark:text-sky-400 font-medium mb-3">
-                                            <span class="uppercase tracking-wider px-3 py-1 rounded-full bg-sky-100 dark:bg-sky-950/60 border border-sky-300 dark:border-sky-800/40">${s.category || 'Report'}</span>
-                                            <span class="text-slate-500 dark:text-slate-400">${formatStoryTimestamp(s.created_at)}</span>
-                                        </div>
-                                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 leading-snug truncate">${s.title}</h3>
-                                        <p class="text-sm text-slate-700 dark:text-slate-300 line-clamp-3 leading-relaxed">${s.content}</p>
-                                    </div>
-                                    <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800/60 text-xs">
-                                        <span class="text-slate-500 dark:text-slate-400">By <strong class="text-slate-800 dark:text-slate-300">${s.author || 'Faizan Mir'}</strong></span>
-                                        <button onclick="openStoryModal('${s.id || s._id}')" class="text-sky-500 dark:text-sky-400 font-semibold hover:underline flex items-center gap-1 text-sm cursor-pointer">View More <i class="fa-solid fa-arrow-right text-xs"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('');
-                    }
-                } else {
-                    container.innerHTML = `<p class="text-center text-slate-500 dark:text-slate-400 text-sm py-6">No stories available.</p>`;
-                }
-            } catch (e) {
-                console.error("Error loading stories:", e);
-                container.innerHTML = `<p class="text-center text-red-500 dark:text-red-400 text-sm py-6">Failed to load stories.</p>`;
-            }
-        }
-
-        function openStoryModal(storyId) {
-            const story = allStoriesData.find(s => (s.id == storyId || s._id == storyId));
-            if (!story) return;
-
-            document.getElementById('modal-category').textContent = story.category || 'Report';
-            document.getElementById('modal-title').textContent = story.title;
-            document.getElementById('modal-body').innerHTML = `
-                <div class="space-y-4">
-                    <div class="text-sm sm:text-base leading-relaxed whitespace-pre-line">${story.content}</div>
-                    <div class="pt-4 border-t border-slate-300 dark:border-slate-800 text-xs text-slate-500 flex justify-between items-center">
-                        <span>Published by <strong class="text-slate-800 dark:text-slate-300">${story.author || 'Faizan Mir'}</strong></span>
-                        <span class="text-slate-400">${formatStoryTimestamp(story.created_at)}</span>
-                    </div>
-                </div>
-            `;
-
-            const mediaContainer = document.getElementById('modal-media-container');
-            if (story.image_url) {
-                mediaContainer.innerHTML = renderMediaHtml(story.image_url, "w-full h-72 sm:h-80 object-contain");
-                mediaContainer.classList.remove('hidden');
-            } else {
-                mediaContainer.innerHTML = '';
-                mediaContainer.classList.add('hidden');
-            }
-
-            const modal = document.getElementById('article-modal');
-            const box = document.getElementById('modal-content-box');
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                box.classList.remove('scale-95');
-                box.classList.add('scale-100');
-            }, 10);
-        }
-
-        function closeArticleModal(event) {
-            closeModalDirect();
-        }
-
-        function closeModalDirect() {
-            const modal = document.getElementById('article-modal');
-            const box = document.getElementById('modal-content-box');
-            modal.classList.add('opacity-0');
-            box.classList.remove('scale-100');
-            box.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
-        }
-
-        loadStories();
     </script>
 </body>
 </html>
