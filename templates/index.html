@@ -267,6 +267,11 @@
         </div>
     </section>
 
+    <!-- Floating Scroll-to-Top Button -->
+    <button id="scroll-top-btn" onclick="scrollToTop()" class="fixed bottom-6 right-6 z-30 w-10 h-10 rounded-full bg-slate-900/60 dark:bg-white/10 backdrop-blur-md border border-slate-300/30 dark:border-white/20 text-sky-400 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:scale-110 shadow-lg cursor-pointer" title="Scroll to Top">
+        <i class="fa-solid fa-chevron-up text-xs"></i>
+    </button>
+
     <!-- ARTICLE POPUP MODAL (Click outside to close) -->
     <div id="article-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300" onclick="closeArticleModal(event)">
         <div id="modal-content-box" class="card-3d w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-white/20 relative shadow-2xl transform scale-95 transition-transform duration-300" onclick="event.stopPropagation()">
@@ -362,15 +367,30 @@
             document.getElementById('stories-section').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Hide/Show Scroll Arrow based on scroll position
+        // Smooth scroll to top when top button is clicked
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Hide/Show Scroll Arrow and Scroll-to-Top Button based on scroll position
         window.addEventListener('scroll', () => {
             const scrollArrow = document.getElementById('scroll-arrow');
+            const scrollTopBtn = document.getElementById('scroll-top-btn');
+            
             if (window.scrollY > 150) {
                 scrollArrow.style.opacity = '0';
                 scrollArrow.style.pointerEvents = 'none';
             } else {
                 scrollArrow.style.opacity = '1';
                 scrollArrow.style.pointerEvents = 'auto';
+            }
+
+            if (window.scrollY > 300) {
+                scrollTopBtn.style.opacity = '1';
+                scrollTopBtn.style.pointerEvents = 'auto';
+            } else {
+                scrollTopBtn.style.opacity = '0';
+                scrollTopBtn.style.pointerEvents = 'none';
             }
         });
 
