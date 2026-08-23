@@ -94,13 +94,15 @@
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-tr from-sky-600/15 to-indigo-600/15 blur-[140px] rounded-full pointer-events-none"></div>
 
     <!-- Premium Header Section -->
-    <header class="relative z-20 flex justify-between items-center w-full px-6 sm:px-12 py-3.5 mb-6 bg-slate-900/10 dark:bg-slate-900/60 backdrop-blur-xl border-b border-slate-300/60 dark:border-slate-800/80 shadow-md box-border">
-        <a href="/" class="py-1 inline-block">
-            <span class="text-3d-cursive">Faizan Mir</span>
-        </a>
-        <button onclick="toggleMenu()" class="group flex items-center justify-center bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-amber-300 dark:from-slate-800 dark:via-indigo-900 dark:to-slate-800 w-10 h-10 rounded-full hover:scale-105 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)] cursor-pointer border border-amber-400/30 hover:border-amber-400/70" title="Open Menu">
-            <i class="fa-solid fa-bars text-sm text-amber-400 transition-transform group-hover:rotate-90 duration-300"></i>
-        </button>
+    <header class="relative z-20 w-full px-6 sm:px-12 py-3.5 mb-6 bg-slate-900/10 dark:bg-slate-900/60 backdrop-blur-xl border-b border-slate-300/60 dark:border-slate-800/80 shadow-md box-border">
+        <div class="max-w-6xl mx-auto flex justify-between items-center w-full">
+            <a href="/" class="py-1 inline-block">
+                <span class="text-3d-cursive">Faizan Mir</span>
+            </a>
+            <button onclick="toggleMenu()" class="group flex items-center justify-center bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-amber-300 dark:from-slate-800 dark:via-indigo-900 dark:to-slate-800 w-10 h-10 rounded-full hover:scale-105 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)] cursor-pointer border border-amber-400/30 hover:border-amber-400/70 shrink-0" title="Open Menu">
+                <i class="fa-solid fa-bars text-sm text-amber-400 transition-transform group-hover:rotate-90 duration-300"></i>
+            </button>
+        </div>
     </header>
 
     <!-- Slide-out Drawer Menu -->
