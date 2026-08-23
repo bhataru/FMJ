@@ -48,6 +48,45 @@
         }
         #menu-drawer { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
+        @keyframes fullSpin3D {
+            0% { transform: perspective(600px) rotateY(0deg); }
+            100% { transform: perspective(600px) rotateY(360deg); }
+        }
+
+        .text-3d-cursive {
+            font-family: 'Great Vibes', 'Pinyon Script', 'Brush Script MT', cursive, serif;
+            font-size: clamp(1.4rem, 3vw, 2.2rem);
+            font-weight: bold;
+            font-style: italic;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            transform-style: preserve-3d;
+            animation: fullSpin3D 10s linear infinite;
+            color: #f8fafc;
+            text-shadow: 
+                0 1px 0 #cbd5e1,
+                0 2px 0 #94a3b8,
+                0 3px 0 #64748b,
+                0 4px 0 #475569,
+                0 5px 10px rgba(0, 0, 0, 0.6),
+                0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        html:not(.dark) .text-3d-cursive {
+            color: #0f172a;
+            text-shadow: 
+                0 1px 0 #ffffff,
+                0 2px 0 #cbd5e1,
+                0 3px 0 #94a3b8,
+                0 4px 0 #64748b,
+                0 5px 15px rgba(15, 23, 42, 0.25),
+                0 2px 5px rgba(15, 23, 42, 0.15);
+        }
+        
+        .text-3d-cursive:hover {
+            animation-play-state: paused;
+        }
+
         .drawer-link {
             position: relative;
             display: inline-block;
@@ -75,7 +114,7 @@
     <!-- Header Section -->
     <header class="relative z-20 flex justify-between items-center w-full px-6 sm:px-12 py-3.5 mb-6 bg-slate-900/10 dark:bg-slate-900/60 backdrop-blur-xl border-b border-slate-300/60 dark:border-slate-800/80 shadow-md box-border">
         <a href="/" class="py-1 inline-block">
-            <span class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Faizan Mir</span>
+            <span class="text-3d-cursive">Faizan Mir</span>
         </a>
         <button onclick="toggleMenu()" class="group flex items-center justify-center bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-amber-300 dark:from-slate-800 dark:via-indigo-900 dark:to-slate-800 w-10 h-10 rounded-full hover:scale-105 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)] cursor-pointer border border-amber-400/30 hover:border-amber-400/70" title="Open Menu">
             <i class="fa-solid fa-bars text-sm text-amber-400 transition-transform group-hover:rotate-90 duration-300"></i>
