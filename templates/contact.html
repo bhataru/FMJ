@@ -39,6 +39,12 @@
         }
         #menu-drawer { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
+        /* Continuous Full 360-degree Rotation Animation */
+        @keyframes fullSpin3D {
+            0% { transform: perspective(600px) rotateY(0deg); }
+            100% { transform: perspective(600px) rotateY(360deg); }
+        }
+
         .text-3d-cursive {
             font-family: 'Great Vibes', 'Pinyon Script', 'Brush Script MT', cursive, serif;
             font-size: clamp(1.8rem, 3vw, 2.4rem);
@@ -47,6 +53,7 @@
             letter-spacing: 0.05em;
             display: inline-block;
             transform-style: preserve-3d;
+            animation: fullSpin3D 10s linear infinite;
             color: #f8fafc;
             text-shadow: 
                 0 1px 0 #cbd5e1,
@@ -66,6 +73,10 @@
                 0 4px 0 #64748b,
                 0 5px 15px rgba(15, 23, 42, 0.25),
                 0 2px 5px rgba(15, 23, 42, 0.15);
+        }
+        
+        .text-3d-cursive:hover {
+            animation-play-state: paused;
         }
 
         .drawer-link {
@@ -87,6 +98,9 @@
         .drawer-link:hover::after {
             width: 100%;
         }
+        .drawer-link-home::after { background-color: #10b981; }
+        .drawer-link-photos::after { background-color: #a855f7; }
+        .drawer-link-videos::after { background-color: #f43f5e; }
         .drawer-link-contact::after { background-color: #fbbf24; }
         .drawer-link-about::after { background-color: #38bdf8; }
 
@@ -187,7 +201,7 @@
 
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[900px] h-[500px] bg-gradient-to-tr from-sky-600/15 to-indigo-600/15 blur-[140px] rounded-full pointer-events-none"></div>
 
-    <!-- Premium Header Section -->
+    <!-- Premium Header Section Matching Home Style -->
     <header class="relative z-20 flex justify-between items-center w-full px-6 sm:px-12 py-3.5 mb-6 bg-slate-900/10 dark:bg-slate-900/60 backdrop-blur-xl border-b border-slate-300/60 dark:border-slate-800/80 shadow-md box-border">
         <a href="/" class="py-1 inline-block">
             <span class="text-3d-cursive">Faizan Mir</span>
@@ -197,7 +211,7 @@
         </button>
     </header>
 
-    <!-- Slide-out Drawer Menu -->
+    <!-- Slide-out Drawer Menu Matching Home Style -->
     <div id="menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300" onclick="toggleMenu()"></div>
     <div id="menu-drawer" class="fixed top-0 right-0 w-72 h-full bg-gradient-to-b from-indigo-950 via-purple-900 to-slate-950 text-white z-50 transform translate-x-full shadow-2xl border-l border-white/10 flex flex-col p-8 box-border">
         <div class="flex justify-between items-center mb-10">
@@ -208,7 +222,16 @@
             <button onclick="toggleMenu()" class="text-white/70 hover:text-white hover:scale-110 transition text-lg p-2 cursor-pointer border-0"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <nav class="space-y-6 flex-1 text-lg font-medium">
-            <a href="/contact" onclick="toggleMenu()" class="block text-white/80 hover:text-amber-400 drawer-link drawer-link-contact">
+            <a href="/home" onclick="toggleMenu()" class="block text-white/80 hover:text-emerald-400 drawer-link drawer-link-home">
+                <i class="fa-solid fa-house w-5 text-emerald-400"></i> Home
+            </a>
+            <a href="/photos" onclick="toggleMenu()" class="block text-white/80 hover:text-purple-400 drawer-link drawer-link-photos">
+                <i class="fa-solid fa-images w-5 text-purple-400"></i> Photos
+            </a>
+            <a href="/videos" onclick="toggleMenu()" class="block text-white/80 hover:text-rose-400 drawer-link drawer-link-videos">
+                <i class="fa-solid fa-video w-5 text-rose-400"></i> Videos
+            </a>
+            <a href="/contact" onclick="toggleMenu()" class="block text-white hover:text-amber-400 drawer-link drawer-link-contact">
                 <i class="fa-solid fa-envelope w-5 text-amber-400"></i> Contact
             </a>
             <a href="/" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link drawer-link-about">
@@ -218,10 +241,10 @@
         <div class="text-xs text-white/40 pt-4 border-t border-white/10">Designed By Deadend</div>
     </div>
 
-    <!-- MAIN RESPONSIVE CONTAINER -->
+    <!-- MAIN RESPONSIVE CONTAINER WITH SIDE FLOATING NAV -->
     <main class="relative z-10 w-full max-w-4xl mx-auto px-4 my-auto flex items-start gap-3 sm:gap-6">
         
-        <!-- Floating Navigation Icons -->
+        <!-- Floating Navigation Icons matching Home layout -->
         <div class="flex flex-col gap-6 flex-shrink-0 sticky top-28 pl-1 sm:pl-2">
             <a href="/home" class="w-10 h-10 flex items-center justify-center bg-transparent hover:scale-125 transition-transform group border-0 outline-none shadow-none" title="Home">
                 <i class="fa-solid fa-house text-emerald-500 text-xl transition-transform drop-shadow-[0_2px_8px_rgba(16,185,129,0.4)]"></i>
