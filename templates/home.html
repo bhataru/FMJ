@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Home - Stories | Faizan Mir</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -28,6 +28,15 @@
         }
     </script>
     <style>
+        /* Prevent horizontal overflow causing zoom-out / layout shift */
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+            margin: 0;
+            padding: 0;
+        }
+
         .card-3d {
             background: linear-gradient(145deg, #162032, #0d1320);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
@@ -39,7 +48,6 @@
         }
         #menu-drawer { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        /* Continuous Full 360-degree Rotation Animation */
         @keyframes fullSpin3D {
             0% { transform: perspective(600px) rotateY(0deg); }
             100% { transform: perspective(600px) rotateY(360deg); }
@@ -99,9 +107,9 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 font-sans min-h-screen relative flex flex-col justify-between py-0 px-0 transition-colors duration-300 overflow-x-hidden">
+<body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 font-sans min-h-screen relative flex flex-col justify-between py-0 px-0 transition-colors duration-300">
 
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-tr from-sky-600/15 to-indigo-600/15 blur-[140px] rounded-full pointer-events-none"></div>
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-tr from-sky-600/15 to-indigo-600/15 blur-[140px] rounded-full pointer-events-none z-0"></div>
 
     <!-- Header Section -->
     <header class="relative z-20 w-full px-4 sm:px-8 py-3 mb-6 bg-slate-900/10 dark:bg-slate-900/60 backdrop-blur-xl border-b border-slate-300/60 dark:border-slate-800/80 shadow-md box-border">
@@ -202,22 +210,24 @@
             return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
         }
 
-        // Three.js Background Particle Animation Script
+        // Three.js Background Particle Animation Script (Contained Safely)
         document.addEventListener("DOMContentLoaded", () => {
             const container = document.createElement('div');
             container.style.position = 'fixed';
             container.style.top = '0'; container.style.left = '0';
             container.style.width = '100vw'; container.style.height = '100vh';
             container.style.zIndex = '-1'; container.style.pointerEvents = 'none';
+            container.style.overflow = 'hidden';
             document.body.prepend(container);
 
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             container.appendChild(renderer.domElement);
 
-            const particlesCount = 1000;
+            const particlesCount = 800;
             const posArray = new Float32Array(particlesCount * 3);
             for(let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 15; }
 
