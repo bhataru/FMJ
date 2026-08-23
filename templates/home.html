@@ -39,12 +39,7 @@
         }
         #menu-drawer { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        /* Continuous Full 360-degree Rotation Animation */
-        @keyframes fullSpin3D {
-            0% { transform: perspective(600px) rotateY(0deg); }
-            100% { transform: perspective(600px) rotateY(360deg); }
-        }
-
+        /* Static 3D Cursive Name Style (Rotation Removed) */
         .text-3d-cursive {
             font-family: 'Great Vibes', 'Pinyon Script', 'Brush Script MT', cursive, serif;
             font-size: clamp(1.6rem, 3.5vw, 2.4rem);
@@ -53,7 +48,6 @@
             letter-spacing: 0.05em;
             display: inline-block;
             transform-style: preserve-3d;
-            animation: fullSpin3D 10s linear infinite;
             color: #f8fafc;
             text-shadow: 
                 0 1px 0 #cbd5e1,
@@ -74,10 +68,6 @@
                 0 5px 15px rgba(15, 23, 42, 0.25),
                 0 2px 5px rgba(15, 23, 42, 0.15);
         }
-        
-        .text-3d-cursive:hover {
-            animation-play-state: paused;
-        }
 
         .drawer-link {
             position: relative;
@@ -91,7 +81,7 @@
             height: 2px;
             bottom: -4px;
             left: 0;
-            background-color: #38bdf8;
+            background-color: currentColor;
             transition: width 0.3s ease-in-out;
         }
         .drawer-link:hover::after {
@@ -99,17 +89,17 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 font-sans min-h-screen relative flex flex-col justify-between py-4 sm:py-8 px-3 sm:px-6 transition-colors duration-300 overflow-x-hidden">
+<body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 font-sans min-h-screen relative flex flex-col justify-between py-0 sm:py-0 px-0 transition-colors duration-300 overflow-x-hidden">
 
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-tr from-sky-600/15 to-indigo-600/15 blur-[140px] rounded-full pointer-events-none"></div>
 
-    <!-- Header Matching Index.html & Fully Responsive -->
-    <header class="relative z-20 flex justify-between items-center w-full max-w-4xl mx-auto mb-6 px-2 sm:px-0">
-        <a href="/" class="py-2 inline-block">
+    <!-- Premium Header Section -->
+    <header class="relative z-20 flex justify-between items-center w-full px-6 sm:px-12 py-3.5 mb-6 bg-slate-900/10 dark:bg-slate-900/60 backdrop-blur-xl border-b border-slate-300/60 dark:border-slate-800/80 shadow-md box-border">
+        <a href="/" class="py-1 inline-block">
             <span class="text-3d-cursive">Faizan Mir</span>
         </a>
-        <button onclick="toggleMenu()" class="flex items-center gap-2 bg-slate-200 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700/50 px-3.5 py-2 rounded-full text-slate-700 dark:text-slate-300 hover:text-sky-500 dark:hover:text-sky-400 hover:border-sky-500 hover:scale-105 transition shadow-lg text-xs font-semibold uppercase tracking-wider cursor-pointer" title="Open Menu">
-            <i class="fa-solid fa-bars text-sm text-sky-500 dark:text-sky-400"></i>
+        <button onclick="toggleMenu()" class="group flex items-center justify-center bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-amber-300 dark:from-slate-800 dark:via-indigo-900 dark:to-slate-800 w-10 h-10 rounded-full hover:scale-105 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)] cursor-pointer border border-amber-400/30 hover:border-amber-400/70" title="Open Menu">
+            <i class="fa-solid fa-bars text-sm text-amber-400 transition-transform group-hover:rotate-90 duration-300"></i>
         </button>
     </header>
 
@@ -124,17 +114,17 @@
             <button onclick="toggleMenu()" class="text-white/70 hover:text-white hover:scale-110 transition text-lg p-2 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <nav class="space-y-6 flex-1 text-lg font-medium">
-            <a href="/home" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link">Home</a>
-            <a href="/photos" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link">Photos</a>
-            <a href="/videos" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link">Videos</a>
-            <a href="/contact" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link">Contact</a>
-            <a href="/" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link">About</a>
+            <a href="/home" onclick="toggleMenu()" class="block text-white/80 hover:text-emerald-400 drawer-link"><i class="fa-solid fa-house w-6 text-emerald-400 mr-2"></i> Home</a>
+            <a href="/photos" onclick="toggleMenu()" class="block text-white/80 hover:text-purple-400 drawer-link"><i class="fa-solid fa-images w-6 text-purple-400 mr-2"></i> Photos</a>
+            <a href="/videos" onclick="toggleMenu()" class="block text-white/80 hover:text-rose-400 drawer-link"><i class="fa-solid fa-video w-6 text-rose-400 mr-2"></i> Videos</a>
+            <a href="/contact" onclick="toggleMenu()" class="block text-white/80 hover:text-amber-400 drawer-link"><i class="fa-solid fa-envelope w-6 text-amber-400 mr-2"></i> Contact</a>
+            <a href="/" onclick="toggleMenu()" class="block text-white/80 hover:text-sky-400 drawer-link"><i class="fa-solid fa-user w-6 text-sky-400 mr-2"></i> About</a>
         </nav>
         <div class="text-xs text-white/40 pt-4 border-t border-white/10">Designed By Deadend</div>
     </div>
 
     <!-- MAIN RESPONSIVE CONTAINER -->
-    <main class="relative z-10 w-full max-w-4xl mx-auto my-auto">
+    <main class="relative z-10 w-full max-w-4xl mx-auto my-auto px-4 sm:px-6">
         <div class="card-3d rounded-3xl p-5 sm:p-8 md:p-10 border border-slate-200 dark:border-white/10 relative">
             
             <!-- LIVE CLOCK & DATE WIDGET -->
@@ -162,16 +152,24 @@
         </div>
     </main>
 
-    <!-- FULL STORY MODAL VIEW -->
-    <div id="story-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
-        <div class="card-3d w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl p-6 sm:p-8 border border-slate-300 dark:border-white/20 relative shadow-2xl transform scale-95 transition-transform duration-300" id="modal-content-box">
-            <button onclick="closeModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-sky-500 flex items-center justify-center transition shadow z-10 cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div id="modal-body"></div>
+    <!-- ARTICLE POPUP MODAL (Click outside to close) -->
+    <div id="article-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300" onclick="closeArticleModal(event)">
+        <div id="modal-content-box" class="card-3d w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-white/20 relative shadow-2xl transform scale-95 transition-transform duration-300" onclick="event.stopPropagation()">
+            <button onclick="closeModalDirect()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:scale-110 transition cursor-pointer border-0">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <span id="modal-category" class="text-[11px] uppercase tracking-widest text-sky-500 font-bold"></span>
+            <h2 id="modal-title" class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-1 mb-4 leading-snug"></h2>
+            
+            <!-- Media Container inside Modal -->
+            <div id="modal-media-container" class="mb-4 rounded-xl overflow-hidden bg-black/40 hidden"></div>
+
+            <div id="modal-body" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed space-y-4 pt-2 border-t border-slate-300 dark:border-slate-800"></div>
         </div>
     </div>
 
     <!-- WEBSITE FOOTER -->
-    <footer class="relative z-10 w-full max-w-4xl mx-auto mt-12 pt-6 border-t border-slate-300 dark:border-slate-800 text-center text-sm text-slate-600 dark:text-slate-400 space-y-2">
+    <footer class="relative z-10 w-full max-w-4xl mx-auto mt-12 mb-6 px-4 pt-6 border-t border-slate-300 dark:border-slate-800 text-center text-sm text-slate-600 dark:text-slate-400 space-y-2">
         <p>Faizan Mir &copy; <span id="current-year"></span>. All rights reserved.</p>
         <p class="space-x-2">
             <a href="/privacy" class="hover:text-sky-500 dark:hover:text-sky-400 transition">Privacy Policy</a>
@@ -361,25 +359,28 @@
             const story = allStoriesData.find(s => (s.id == storyId || s._id == storyId));
             if (!story) return;
 
-            const modalBody = document.getElementById('modal-body');
-            modalBody.innerHTML = `
-                <div class="space-y-6">
-                    ${story.image_url ? `<div class="w-full h-72 sm:h-80 rounded-2xl overflow-hidden shadow-inner bg-slate-950 flex items-center justify-center">${renderMediaHtml(story.image_url, "w-full h-full object-contain")}</div>` : ''}
-                    <div>
-                        <div class="flex items-center justify-between text-xs text-sky-500 font-semibold mb-3">
-                            <span class="uppercase tracking-wider px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20">${story.category || 'Report'}</span>
-                            <span class="text-slate-400">${formatStoryTimestamp(story.created_at)}</span>
-                        </div>
-                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mb-4 leading-snug">${story.title}</h2>
-                        <div class="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line space-y-4">${story.content}</div>
-                    </div>
+            document.getElementById('modal-category').textContent = story.category || 'Report';
+            document.getElementById('modal-title').textContent = story.title;
+            document.getElementById('modal-body').innerHTML = `
+                <div class="space-y-4">
+                    <div class="text-sm sm:text-base leading-relaxed whitespace-pre-line">${story.content}</div>
                     <div class="pt-4 border-t border-slate-300 dark:border-slate-800 text-xs text-slate-500 flex justify-between items-center">
                         <span>Published by <strong class="text-slate-800 dark:text-slate-300">${story.author || 'Faizan Mir'}</strong></span>
+                        <span class="text-slate-400">${formatStoryTimestamp(story.created_at)}</span>
                     </div>
                 </div>
             `;
 
-            const modal = document.getElementById('story-modal');
+            const mediaContainer = document.getElementById('modal-media-container');
+            if (story.image_url) {
+                mediaContainer.innerHTML = renderMediaHtml(story.image_url, "w-full h-72 sm:h-80 object-contain");
+                mediaContainer.classList.remove('hidden');
+            } else {
+                mediaContainer.innerHTML = '';
+                mediaContainer.classList.add('hidden');
+            }
+
+            const modal = document.getElementById('article-modal');
             const box = document.getElementById('modal-content-box');
             modal.classList.remove('hidden');
             setTimeout(() => {
@@ -389,8 +390,12 @@
             }, 10);
         }
 
-        function closeModal() {
-            const modal = document.getElementById('story-modal');
+        function closeArticleModal(event) {
+            closeModalDirect();
+        }
+
+        function closeModalDirect() {
+            const modal = document.getElementById('article-modal');
             const box = document.getElementById('modal-content-box');
             modal.classList.add('opacity-0');
             box.classList.remove('scale-100');
