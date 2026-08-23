@@ -96,6 +96,14 @@
         }
         .drawer-link-contact::after { background-color: #fbbf24; }
         .drawer-link-about::after { background-color: #38bdf8; }
+
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+        .animate-bounce-slow {
+            animation: bounce-slow 2s infinite ease-in-out;
+        }
     </style>
 </head>
 <body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 font-sans min-h-screen relative flex flex-col justify-between py-6 sm:py-8 transition-colors duration-300 overflow-x-hidden">
@@ -211,8 +219,16 @@
         </div>
     </main>
 
+    <!-- Scroll Down Indicator Arrow -->
+    <div id="scroll-arrow" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center cursor-pointer transition-opacity duration-300 pointer-events-auto" onclick="scrollToStories()">
+        <span class="text-[10px] uppercase tracking-widest text-sky-500 font-semibold mb-1 drop-shadow">Latest Stories</span>
+        <div class="w-8 h-8 rounded-full bg-slate-900/40 dark:bg-white/10 backdrop-blur-md border border-slate-300/30 dark:border-white/20 flex items-center justify-center text-sky-400 animate-bounce-slow shadow-lg">
+            <i class="fa-solid fa-chevron-down text-xs"></i>
+        </div>
+    </div>
+
     <!-- LATEST STORIES SECTION -->
-    <section class="relative z-10 w-full max-w-3xl lg:max-w-5xl mx-auto px-4 mt-12 mb-4">
+    <section id="stories-section" class="relative z-10 w-full max-w-3xl lg:max-w-5xl mx-auto px-4 mt-16 mb-4">
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
                 <i class="fa-solid fa-feather-pointed text-sky-500"></i> Latest Stories
@@ -222,14 +238,19 @@
         
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {% for story in stories %}
-            <article class="card-3d rounded-2xl border border-slate-200 dark:border-white/10 flex flex-col justify-between overflow-hidden transition hover:-translate-y-1">
+            <article 
+                data-title="{{ story.title|e }}" 
+                data-category="{{ story.category|default('Journalism')|e }}" 
+                data-content="{{ story.content|e }}" 
+                onclick="handleCardClick(this)" 
+                class="card-3d rounded-2xl border border-slate-200 dark:border-white/10 flex flex-col justify-between overflow-hidden transition hover:-translate-y-1 cursor-pointer group">
                 
                 <!-- Media Display Box -->
                 <div class="w-full h-44 bg-slate-200 dark:bg-slate-900 relative overflow-hidden flex items-center justify-center">
                     {% if story.image_url %}
-                        <img src="{{ story.image_url }}" alt="{{ story.title }}" class="absolute inset-0 w-full h-full object-cover">
+                        <img src="{{ story.image_url }}" alt="{{ story.title }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800';">
                     {% else %}
-                        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800" alt="Default" class="absolute inset-0 w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800" alt="Default" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                     {% endif %}
                 </div>
 
@@ -237,17 +258,17 @@
                 <div class="p-4 sm:p-5 flex flex-col justify-between flex-1">
                     <div>
                         <span class="text-[10px] uppercase tracking-widest text-sky-500 font-bold">{{ story.category|default('Journalism') }}</span>
-                        <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white mt-1 mb-2 leading-snug">{{ story.title }}</h3>
+                        <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white mt-1 mb-2 leading-snug group-hover:text-sky-500 transition-colors">{{ story.title }}</h3>
                         <p class="text-xs text-slate-600 dark:text-slate-400 line-clamp-3">
                             {{ story.content }}
                         </p>
                     </div>
 
                     <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-[11px] text-slate-500">
-                        <button onclick="openArticleModal('{{ story.title|e }}', '{{ story.category|default('Journalism')|e }}', `{{ story.content|safe }}`)" class="text-sky-600 dark:text-sky-400 font-semibold hover:underline flex items-center gap-1 cursor-pointer bg-transparent border-0 p-0">
+                        <span class="text-sky-600 dark:text-sky-400 font-semibold flex items-center gap-1 group-hover:underline">
                             <span>Read Report</span>
                             <i class="fa-solid fa-arrow-right-long"></i>
-                        </button>
+                        </span>
                         <span>{{ story.created_at.strftime('%b %d, %Y') if story.created_at else '' }}</span>
                     </div>
                 </div>
@@ -282,6 +303,14 @@
     <script>
         document.getElementById('current-year').textContent = new Date().getFullYear();
         
+        // Safe card click handler using data attributes
+        function handleCardClick(element) {
+            const title = element.getAttribute('data-title');
+            const category = element.getAttribute('data-category');
+            const content = element.getAttribute('data-content');
+            openArticleModal(title, category, content);
+        }
+
         // Modal functions for opening/closing articles
         function openArticleModal(title, category, content) {
             document.getElementById('modal-title').textContent = title;
@@ -315,6 +344,23 @@
                 modal.classList.add('hidden');
             }, 300);
         }
+
+        // Smooth scroll to stories section when bottom arrow is clicked
+        function scrollToStories() {
+            document.getElementById('stories-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Hide/Show Scroll Arrow based on scroll position
+        window.addEventListener('scroll', () => {
+            const scrollArrow = document.getElementById('scroll-arrow');
+            if (window.scrollY > 150) {
+                scrollArrow.style.opacity = '0';
+                scrollArrow.style.pointerEvents = 'none';
+            } else {
+                scrollArrow.style.opacity = '1';
+                scrollArrow.style.pointerEvents = 'auto';
+            }
+        });
 
         // Three.js Background Particle Animation
         document.addEventListener("DOMContentLoaded", () => {
