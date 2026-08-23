@@ -35,6 +35,7 @@
             max-width: 100vw;
             margin: 0;
             padding: 0;
+            scroll-behavior: smooth;
         }
 
         .card-3d {
@@ -164,6 +165,11 @@
         </div>
     </main>
 
+    <!-- SCROLL TO TOP BUTTON -->
+    <button id="scrollToTopBtn" onclick="scrollToTop()" class="fixed bottom-6 right-6 z-30 w-11 h-11 rounded-full bg-sky-500/90 hover:bg-sky-600 text-white shadow-lg backdrop-blur-md flex items-center justify-center transition-all duration-300 opacity-0 pointer-events-none translate-y-4 cursor-pointer border border-sky-400/30" title="Go to top">
+        <i class="fa-solid fa-arrow-up text-sm"></i>
+    </button>
+
     <!-- FULL STORY MODAL VIEW -->
     <div id="story-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4" onclick="closeModalOnOutsideClick(event)">
         <div class="card-3d w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl p-6 sm:p-8 border border-slate-300 dark:border-white/20 relative shadow-2xl transform scale-95 transition-transform duration-300" id="modal-content-box" onclick="event.stopPropagation()">
@@ -194,6 +200,25 @@
         }
         setInterval(updateLiveClock, 1000);
         updateLiveClock();
+
+        // Scroll to Top Logic
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollToTopBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+                scrollToTopBtn.classList.add('opacity-100', 'translate-y-0');
+            } else {
+                scrollToTopBtn.classList.remove('opacity-100', 'translate-y-0');
+                scrollToTopBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
 
         function formatStoryTimestamp(dateString) {
             if (!dateString) return '';
