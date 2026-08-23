@@ -184,29 +184,6 @@
                             With a <strong class="text-slate-900 dark:text-white">Bachelor's degree in Convergent Journalism (BJMC)</strong>, I work across formats as a reporter, visual storyteller, and multimedia journalist. My passion lies in documenting lived experiences with depth and sensitivity, amplifying underrepresented voices, and bringing nuanced perspectives from the region to a global audience.
                         </p>
                     </div>
-
-                    <div class="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-slate-300 dark:border-slate-800/80 space-y-2 sm:space-y-3 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-                        <div class="flex items-center space-x-3">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0"></span>
-                            <span><strong>9+ years of journalism experience</strong> covering Kashmir.</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0"></span>
-                            <span><strong>Published</strong> in top national and international outlets.</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0"></span>
-                            <span><strong>Expert in multimedia storytelling</strong> and visual reporting.</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0"></span>
-                            <span>Focus on <strong>human rights, conflict, and social issues</strong>.</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] flex-shrink-0"></span>
-                            <span>Passionate about <strong>amplifying underrepresented voices</strong>.</span>
-                        </div>
-                    </div>
                </div>
 
                 <div class="mt-6 pt-4 border-t border-slate-300 dark:border-slate-800/80 flex justify-center md:justify-start items-center space-x-4">
@@ -242,12 +219,24 @@
                 data-title="{{ story.title|e }}" 
                 data-category="{{ story.category|default('Journalism')|e }}" 
                 data-content="{{ story.content|e }}" 
+                data-media="{{ story.image_url|default(story.video_url, true)|e }}" 
+                data-media-type="{% if story.video_url or (story.image_url and story.image_url.endswith('.mp4')) %}video{% else %}image{% endif %}"
                 onclick="handleCardClick(this)" 
                 class="card-3d rounded-2xl border border-slate-200 dark:border-white/10 flex flex-col justify-between overflow-hidden transition hover:-translate-y-1 cursor-pointer group">
                 
                 <!-- Media Display Box -->
                 <div class="w-full h-44 bg-slate-200 dark:bg-slate-900 relative overflow-hidden flex items-center justify-center">
-                    {% if story.image_url %}
+                    {% if story.video_url %}
+                        <video src="{{ story.video_url }}" class="absolute inset-0 w-full h-full object-cover" muted preload="metadata"></video>
+                        <div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition">
+                            <i class="fa-solid fa-play text-white text-2xl drop-shadow-md"></i>
+                        </div>
+                    {% elif story.image_url and story.image_url.endswith('.mp4') %}
+                        <video src="{{ story.image_url }}" class="absolute inset-0 w-full h-full object-cover" muted preload="metadata"></video>
+                        <div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition">
+                            <i class="fa-solid fa-play text-white text-2xl drop-shadow-md"></i>
+                        </div>
+                    {% elif story.image_url %}
                         <img src="{{ story.image_url }}" alt="{{ story.title }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800';">
                     {% else %}
                         <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800" alt="Default" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
@@ -286,6 +275,10 @@
             </button>
             <span id="modal-category" class="text-[11px] uppercase tracking-widest text-sky-500 font-bold"></span>
             <h2 id="modal-title" class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-1 mb-4 leading-snug"></h2>
+            
+            <!-- Media Container inside Modal -->
+            <div id="modal-media-container" class="mb-4 rounded-xl overflow-hidden bg-black/40 hidden"></div>
+
             <div id="modal-body" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed space-y-4 pt-2 border-t border-slate-300 dark:border-slate-800"></div>
         </div>
     </div>
@@ -308,14 +301,29 @@
             const title = element.getAttribute('data-title');
             const category = element.getAttribute('data-category');
             const content = element.getAttribute('data-content');
-            openArticleModal(title, category, content);
+            const media = element.getAttribute('data-media');
+            const mediaType = element.getAttribute('data-media-type');
+            openArticleModal(title, category, content, media, mediaType);
         }
 
         // Modal functions for opening/closing articles
-        function openArticleModal(title, category, content) {
+        function openArticleModal(title, category, content, media, mediaType) {
             document.getElementById('modal-title').textContent = title;
             document.getElementById('modal-category').textContent = category;
             document.getElementById('modal-body').innerHTML = content.replace(/\n/g, '<br>');
+            
+            const mediaContainer = document.getElementById('modal-media-container');
+            if (media && media.trim() !== '') {
+                mediaContainer.classList.remove('hidden');
+                if (mediaType === 'video') {
+                    mediaContainer.innerHTML = `<video src="${media}" class="w-full max-h-[350px] object-contain bg-black" controls autoplay></video>`;
+                } else {
+                    mediaContainer.innerHTML = `<img src="${media}" class="w-full max-h-[350px] object-cover" alt="${title}">`;
+                }
+            } else {
+                mediaContainer.classList.add('hidden');
+                mediaContainer.innerHTML = '';
+            }
             
             const modal = document.getElementById('article-modal');
             const box = document.getElementById('modal-content-box');
@@ -328,7 +336,6 @@
         }
 
         function closeArticleModal(event) {
-            // Closes only if the dark backdrop itself is clicked
             if (event.target.id === 'article-modal') {
                 closeModalDirect();
             }
@@ -337,6 +344,11 @@
         function closeModalDirect() {
             const modal = document.getElementById('article-modal');
             const box = document.getElementById('modal-content-box');
+            
+            // Stop any playing videos inside the modal when closing
+            const videoEl = modal.querySelector('video');
+            if(videoEl) { videoEl.pause(); }
+
             modal.classList.add('opacity-0');
             box.classList.remove('scale-100');
             box.classList.add('scale-95');
