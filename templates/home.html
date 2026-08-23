@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Home - Stories | Faizan Mir</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -42,7 +42,7 @@
         /* Static 3D Cursive Name Style */
         .text-3d-cursive {
             font-family: 'Great Vibes', 'Pinyon Script', 'Brush Script MT', cursive, serif;
-            font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+            font-size: clamp(1.4rem, 3vw, 2.2rem);
             font-weight: bold;
             font-style: italic;
             letter-spacing: 0.05em;
@@ -89,17 +89,17 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 font-sans min-h-screen relative flex flex-col justify-between py-0 sm:py-0 px-0 transition-colors duration-300 overflow-x-hidden">
+<body class="bg-slate-100 dark:bg-darkBg text-slate-900 dark:text-slate-100 font-sans min-h-screen relative flex flex-col justify-between py-0 px-0 transition-colors duration-300 overflow-x-hidden">
 
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-tr from-sky-600/15 to-indigo-600/15 blur-[140px] rounded-full pointer-events-none"></div>
 
     <!-- Premium Header Section -->
-    <header class="relative z-20 w-full px-6 sm:px-12 py-3.5 mb-6 bg-slate-900/10 dark:bg-slate-900/60 backdrop-blur-xl border-b border-slate-300/60 dark:border-slate-800/80 shadow-md box-border">
+    <header class="relative z-20 w-full px-4 sm:px-8 py-3 mb-6 bg-slate-900/10 dark:bg-slate-900/60 backdrop-blur-xl border-b border-slate-300/60 dark:border-slate-800/80 shadow-md box-border">
         <div class="max-w-6xl mx-auto flex justify-between items-center w-full">
-            <a href="/" class="py-1 inline-block">
-                <span class="text-3d-cursive">Faizan Mir</span>
+            <a href="/" class="py-1 min-w-0 overflow-hidden">
+                <span class="text-3d-cursive truncate block">Faizan Mir</span>
             </a>
-            <button onclick="toggleMenu()" class="group flex items-center justify-center bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-amber-300 dark:from-slate-800 dark:via-indigo-900 dark:to-slate-800 w-10 h-10 rounded-full hover:scale-105 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)] cursor-pointer border border-amber-400/30 hover:border-amber-400/70 shrink-0" title="Open Menu">
+            <button onclick="toggleMenu()" class="group flex items-center justify-center bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-amber-300 dark:from-slate-800 dark:via-indigo-900 dark:to-slate-800 w-10 h-10 rounded-full hover:scale-105 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)] cursor-pointer border border-amber-400/30 hover:border-amber-400/70 shrink-0 ml-3" title="Open Menu">
                 <i class="fa-solid fa-bars text-sm text-amber-400 transition-transform group-hover:rotate-90 duration-300"></i>
             </button>
         </div>
@@ -126,11 +126,11 @@
     </div>
 
     <!-- MAIN RESPONSIVE CONTAINER -->
-    <main class="relative z-10 w-full max-w-6xl mx-auto my-auto px-4 sm:px-6">
-        <div class="card-3d rounded-3xl p-5 sm:p-8 md:p-10 border border-slate-200 dark:border-white/10 relative">
+    <main class="relative z-10 w-full max-w-6xl mx-auto my-auto px-4 sm:px-6 box-border">
+        <div class="card-3d rounded-3xl p-4 sm:p-8 md:p-10 border border-slate-200 dark:border-white/10 relative">
             
             <!-- LIVE CLOCK & DATE WIDGET -->
-            <div class="flex flex-col sm:flex-row items-center justify-between bg-slate-200/60 dark:bg-slate-900/50 border border-slate-300 dark:border-slate-800/80 rounded-2xl px-5 py-3 mb-6 text-xs text-slate-700 dark:text-slate-300">
+            <div class="flex flex-col sm:flex-row items-center justify-between bg-slate-200/60 dark:bg-slate-900/50 border border-slate-300 dark:border-slate-800/80 rounded-2xl px-4 sm:px-5 py-3 mb-6 text-xs text-slate-700 dark:text-slate-300">
                 <div class="flex items-center gap-2 mb-1 sm:mb-0">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
                     <span id="live-date" class="font-medium">Loading date...</span>
