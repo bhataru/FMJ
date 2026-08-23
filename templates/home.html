@@ -48,11 +48,6 @@
         }
         #menu-drawer { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        @keyframes fullSpin3D {
-            0% { transform: perspective(600px) rotateY(0deg); }
-            100% { transform: perspective(600px) rotateY(360deg); }
-        }
-
         .text-3d-cursive {
             font-family: 'Great Vibes', 'Pinyon Script', 'Brush Script MT', cursive, serif;
             font-size: clamp(1.4rem, 3vw, 2.2rem);
@@ -60,8 +55,6 @@
             font-style: italic;
             letter-spacing: 0.05em;
             display: inline-block;
-            transform-style: preserve-3d;
-            animation: fullSpin3D 10s linear infinite;
             color: #f8fafc;
             text-shadow: 
                 0 1px 0 #cbd5e1,
@@ -81,10 +74,6 @@
                 0 4px 0 #64748b,
                 0 5px 15px rgba(15, 23, 42, 0.25),
                 0 2px 5px rgba(15, 23, 42, 0.15);
-        }
-        
-        .text-3d-cursive:hover {
-            animation-play-state: paused;
         }
 
         .drawer-link {
@@ -111,7 +100,7 @@
 
     <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-tr from-sky-600/15 to-indigo-600/15 blur-[140px] rounded-full pointer-events-none z-0"></div>
 
-    <!-- Header Section -->
+    <!-- Premium Header Section -->
     <header class="relative z-20 flex justify-between items-center w-full px-6 sm:px-12 py-3.5 mb-6 bg-slate-900/10 dark:bg-slate-900/60 backdrop-blur-xl border-b border-slate-300/60 dark:border-slate-800/80 shadow-md box-border">
         <a href="/" class="py-1 inline-block">
             <span class="text-3d-cursive">Faizan Mir</span>
